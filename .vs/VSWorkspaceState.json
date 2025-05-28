@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Assets",
+    "\\Assets\\Scripts",
+    "\\Assets\\Scripts\\Backend",
+    "\\Assets\\Scripts\\Backend\\Adoper",
+    "\\Assets\\Scripts\\Backend\\application_layer",
+    "\\Assets\\Scripts\\Backend\\application_layer\\Command",
+    "\\Assets\\Scripts\\Backend\\View",
+    "\\Assets\\StartUIScripts",
+    "\\Assets\\TextMesh Pro"
+  ],
+  "SelectedNode": "\\Assets\\Scripts\\Backend\\Adoper\\GameController.cs",
+  "PreviewInSolutionExplorer": false
+}
