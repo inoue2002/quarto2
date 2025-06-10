@@ -29,7 +29,7 @@ public class Player2InfoGet : MonoBehaviour
         };
 
         // ViewController を介して GameController にコマンドを送信
-        ViewController.Instance.CallGameController(command);
+        // ViewController.Instance.CallGameController(command);
 
          // 次のシーンをロード
         SceneManager.LoadScene("SampleScene");

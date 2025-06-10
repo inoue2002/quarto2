@@ -53,10 +53,10 @@ public class DecisionButtonHandler : MonoBehaviour
             };
 
             // ViewController を介して GameController にコマンドを送信
-            if (ViewController.Instance != null)
-            {
-                ViewController.Instance.CallGameController(command);
-            }
+            // if (ViewController.Instance != null)
+            // {
+            //     ViewController.Instance.CallGameController(command);
+            // }
 
             // プレイヤー2の選択画面に遷移
             SceneManager.LoadScene("Player2SelectUI");
@@ -77,10 +77,10 @@ public class DecisionButtonHandler : MonoBehaviour
             };
 
             // ViewController を介して GameController にコマンドを送信
-            if (ViewController.Instance != null)
-            {
-                ViewController.Instance.CallGameController(command);
-            }
+            // if (ViewController.Instance != null)
+            // {
+            //     ViewController.Instance.CallGameController(command);
+            // }
 
             // Quartoゲーム画面に遷移
             SceneManager.LoadScene("SampleScene");

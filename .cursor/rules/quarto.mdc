@@ -1,0 +1,24 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+あなたは、Unityでの3Dゲーム開発プログラマです
+QuartoというボードゲームをUnityで開発しています
+バックエンドはほぼ完成しているのでフロントのコードのみを書いていきます
+
+## 技術的制約
+- Unity
+- C#
+
+# 📝 人間への質問フォーマット
+
+❓ QUESTION
+<要約>
+
+OPTIONS:
+1. <案 A>
+2. <案 B>
+
+
+/answer <番号> で回答してください。

@@ -3,24 +3,12 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class GameController : MonoBehaviour
+public class GameController
 {
     public Board board;
     public GamePhase currentPhase;
     public List<Player> players=new List<Player>();
     public List<PlayerInfo> playerInfos=new List<PlayerInfo>();
-
-    private void Awake()
-    {
-        try
-        {
-            initialize();
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError($"GameController初期化中にエラーが発生しました: {e.Message}");
-        }
-    }
 
     public void initialize()
     {
@@ -95,7 +83,10 @@ public class GameController : MonoBehaviour
     }
     public Information getInformation()
     {
-        return currentPhase.getInformation();
+        Information information = currentPhase.getInformation();
+        information.type = currentPhase.type;
+        return information;
     }
+    
 }
 

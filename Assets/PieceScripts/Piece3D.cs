@@ -56,15 +56,15 @@ public class Piece3D : MonoBehaviour, IPiece
     
     private void OnMouseDown()
     {
-        if (ViewController.Instance != null)
-        {
-            ViewController.Instance.OnPieceSelected(gameObject);
-            Select(); // 選択状態にする
-        }
-        else
-        {
-            Debug.LogError("ViewController.Instance が設定されていません！");
-        }
+        // if (ViewController.Instance != null)
+        // {
+        //     ViewController.Instance.OnPieceSelected(gameObject);
+        //     Select(); // 選択状態にする
+        // }
+        // else
+        // {
+        //     Debug.LogError("ViewController.Instance が設定されていません！");
+        // }
     }
     
     // IPieceインターフェースの実装

@@ -10,8 +10,8 @@ public class CPU1Button : SelectPlayerButton
 
     void Start()
     {
-        GetComponent<Button>().onClick.AddListener(OnCPUButtonClick);
-        // 次のシーンをロード
+        // GetComponent<Button>().onClick.AddListener(OnCPUButtonClick);
+        // // 次のシーンをロード
         SceneManager.LoadScene("Player2SelectUI");
     }
 

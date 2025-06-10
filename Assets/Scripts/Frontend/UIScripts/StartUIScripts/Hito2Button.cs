@@ -11,7 +11,7 @@ public class Hito2Button : SelectPlayerButton
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        this.GetComponent<Button>().onClick.AddListener(OnHitoButtonClick);
+        // this.GetComponent<Button>().onClick.AddListener(OnHitoButtonClick);
         // 次のシーンへ移動
         SceneManager.LoadScene("SampleScene");
     }

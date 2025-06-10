@@ -18,6 +18,6 @@ public class BoardCell : MonoBehaviour
     {
         // Notify the ViewController that this cell has been clicked
         Debug.Log($"BoardCell.OnMouseDown() called at position ({x}, {y})");
-        ViewController.Instance.OnBoardCellClicked(transform);
+        //ViewController.Instance.OnBoardCellClicked(transform);
     }
 }

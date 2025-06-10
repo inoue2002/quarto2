@@ -52,7 +52,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <UnityProjectGenerator>Package</UnityProjectGenerator>
-    <UnityProjectGeneratorVersion>2.0.22</UnityProjectGeneratorVersion>
+    <UnityProjectGeneratorVersion>2.0.25</UnityProjectGeneratorVersion>
     <UnityProjectGeneratorStyle>SDK</UnityProjectGeneratorStyle>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
@@ -88,23 +88,21 @@
     <Compile Include="Assets\ToggleSetupHelper.cs" />
     <Compile Include="Assets\Scripts\Backend\Const\GamePhaseType.cs" />
     <Compile Include="Assets\ToggleGroupInitializer.cs" />
-    <Compile Include="Assets\StartUIScripts\CPU2Button.cs" />
     <Compile Include="Assets\Scripts\Backend\Player\SelectPieceAlgorithm.cs" />
     <Compile Include="Assets\Scripts\Backend\Const\PlayerInfo.cs" />
     <Compile Include="Assets\PieceScripts\HSCW.cs" />
+    <Compile Include="Assets\Scripts\Frontend\UIScripts\StartUIScripts\SelectPlayerButton.cs" />
     <Compile Include="Assets\PieceScripts\HSCB.cs" />
     <Compile Include="Assets\Scripts\Backend\domain_layer\Pieces.cs" />
     <Compile Include="Assets\CellScripts\Cell4_1.cs" />
     <Compile Include="Assets\Scripts\Backend\application_layer\Usecases\SelectPieceUseCase.cs" />
     <Compile Include="Assets\CellScripts\Cell2_3.cs" />
     <Compile Include="Assets\CellScripts\Cell1_4.cs" />
-    <Compile Include="Assets\StartUIScripts\Hito1Button.cs" />
     <Compile Include="Assets\CellScripts\Cell3_2.cs" />
     <Compile Include="Assets\PieceScripts\FSSB.cs" />
     <Compile Include="Assets\Scripts\Backend\application_layer\Command\PutPieceByUserCommand.cs" />
     <Compile Include="Assets\PieceScripts\HSSB.cs" />
     <Compile Include="Assets\Scripts\Backend\application_layer\Command\SelectPieceByCpu.cs" />
-    <Compile Include="Assets\StartUIScripts\SelectPlayerButton.cs" />
     <Compile Include="Assets\Scripts\BoardCell.cs" />
     <Compile Include="Assets\QuartoMessageBox.cs" />
     <Compile Include="Assets\PieceScripts\HTSW.cs" />
@@ -116,6 +114,8 @@
     <Compile Include="Assets\DecisionButtonHandler.cs" />
     <Compile Include="Assets\PieceScripts\HTSB.cs" />
     <Compile Include="Assets\CellScripts\Cell1_3.cs" />
+    <Compile Include="Assets\Scripts\Frontend\UIScripts\StartUIScripts\CpuDropdown.cs" />
+    <Compile Include="Assets\Scripts\Frontend\UIScripts\StartUIScripts\Hito1Button.cs" />
     <Compile Include="Assets\Scripts\Backend\application_layer\Result\SelectPlayerResult.cs" />
     <Compile Include="Assets\CellScripts\Cell1_2.cs" />
     <Compile Include="Assets\Scripts\Backend\application_layer\Result\Result.cs" />
@@ -129,6 +129,7 @@
     <Compile Include="Assets\Scripts\Backend\application_layer\Command\Command.cs" />
     <Compile Include="Assets\PieceScripts\FSCW.cs" />
     <Compile Include="Assets\Scripts\Backend\Const\PieceId.cs" />
+    <Compile Include="Assets\Scripts\Frontend\UIScripts\StartUIScripts\NextPlayerSelectButton.cs" />
     <Compile Include="Assets\Scripts\Backend\Adoper\GamePhase.cs" />
     <Compile Include="Assets\Scripts\Backend\domain_layer\Piece.cs" />
     <Compile Include="Assets\CellScripts\Cell4_4.cs" />
@@ -141,12 +142,14 @@
     <Compile Include="Assets\Scripts\Backend\Const\PlayerId.cs" />
     <Compile Include="Assets\Scripts\Backend\View\ViewController.cs" />
     <Compile Include="Assets\PieceScripts\HTCB.cs" />
+    <Compile Include="Assets\Scripts\Frontend\UIScripts\StartUIScripts\Hito2Button.cs" />
     <Compile Include="Assets\Scripts\Backend\Information\SelectPieceInformation.cs" />
     <Compile Include="Assets\PieceScripts\FSCB.cs" />
     <Compile Include="Assets\PieceScripts\HSSW.cs" />
     <Compile Include="Assets\CellScripts\Cell2_4.cs" />
     <Compile Include="Assets\Scripts\Backend\application_layer\Command\GameEndCommand.cs" />
     <Compile Include="Assets\Scripts\Backend\Information\Information.cs" />
+    <Compile Include="Assets\Scripts\Frontend\UIScripts\StartUIScripts\CPU1Button.cs" />
     <Compile Include="Assets\Scripts\Backend\Information\SelectPlayerInformation.cs" />
     <Compile Include="Assets\PlayerIngoGet.cs" />
     <Compile Include="Assets\CellScripts\Cell4_2.cs" />
@@ -155,9 +158,8 @@
     <Compile Include="Assets\Scripts\Backend\Adoper\GameController.cs" />
     <Compile Include="Assets\PieceScripts\FTSB.cs" />
     <Compile Include="Assets\Scripts\Backend\Adoper\SelectPieceByCpuPhase.cs" />
-    <Compile Include="Assets\StartUIScripts\CPU1Button.cs" />
     <Compile Include="Assets\CellScripts\Cell2_1.cs" />
-    <Compile Include="Assets\StartUIScripts\Hito2Button.cs" />
+    <Compile Include="Assets\Scripts\Frontend\UIScripts\StartUIScripts\CPU2Button.cs" />
     <Compile Include="Assets\IPiece.cs" />
     <Compile Include="Assets\PieceScripts\FTCW.cs" />
   </ItemGroup>
@@ -1273,6 +1275,10 @@
     </Reference>
     <Reference Include="Unity.TestTools.CodeCoverage.Editor.OpenCover.Mono.Reflection">
       <HintPath>Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.OpenCover.Mono.Reflection.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Cursor.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Cursor.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.VisualScripting.Flow.Editor">
