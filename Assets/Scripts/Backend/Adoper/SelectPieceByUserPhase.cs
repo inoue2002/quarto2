@@ -1,29 +1,43 @@
 public class SelectPieceByUserPhase : GamePhase
 {
+    private bool success = false;
+    public SelectPieceByUserPhase()
+    {
+        type = GamePhaseType.SelectPieceByUser;
+    }
     public override Result execute(Command command, GameController gameController)
     {
-        Result result = SelectPieceUseCase.handle(gameController.getBoard(), ((SelectPieceByUserCommand)command).pieceId);
-
-
-
-
-
-
+        SelectPieceResult result = (SelectPieceResult)SelectPieceUseCase.handle(gameController.getBoard(), ((SelectPieceByUserCommand)command).pieceId);
+        if (result.success)
+        {
+            success = true;
+        }
+        else
+        {
+            success = false;
+        }
         return result;
     }
     public override GamePhase getNextPhase(GameController gameController)
     {
-        if(gameController.getPlayerType(ActionType.PutPiece) == PlayerType.Cpu)
+        if (!success)
         {
-            return new PutPieceByCpuPhase();
+            return new SelectPieceByUserPhase();
         }
         else
         {
-            return new PutPieceByUserPhase();
+            if (gameController.getPlayerType(ActionType.PutPiece) == PlayerType.Cpu)
+            {
+                return new PutPieceByCpuPhase();
+            }
+            else
+            {
+                return new PutPieceByUserPhase();
+            }
         }
     }
-    public override Information getInformation()//選択できる駒を返してあげる
+    public override Information getInformation(GameController gameController)//選択できる駒を返してあげる
     {
-        return null;
+        return new SelectPieceInformation(gameController.getBoard().getSelectablePieces());
     }
 }

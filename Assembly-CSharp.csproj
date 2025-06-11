@@ -76,6 +76,7 @@
     <Compile Include="Assets\Scripts\Backend\application_layer\Command\SelectPlayerCommand.cs" />
     <Compile Include="Assets\Scripts\Backend\Const\Piecevalue.cs" />
     <Compile Include="Assets\Scripts\Backend\Const\Position.cs" />
+    <Compile Include="Assets\Scripts\Frontend\UIScripts\Presenter\SelectPlayerPresenter.cs" />
     <Compile Include="Assets\Scripts\Backend\application_layer\Command\SelectPieceByUserCommand.cs" />
     <Compile Include="Assets\CellScripts\Cell2_2.cs" />
     <Compile Include="Assets\CellScripts\Cell3_1.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Assets\Scripts\Backend\Adoper\GameEndPhase.cs" />
     <Compile Include="Assets\ToggleSetupHelper.cs" />
     <Compile Include="Assets\Scripts\Backend\Const\GamePhaseType.cs" />
+    <Compile Include="Assets\Scripts\Frontend\UIScripts\Presenter\Presenter.cs" />
     <Compile Include="Assets\ToggleGroupInitializer.cs" />
     <Compile Include="Assets\Scripts\Backend\Player\SelectPieceAlgorithm.cs" />
     <Compile Include="Assets\Scripts\Backend\Const\PlayerInfo.cs" />
@@ -115,12 +117,12 @@
     <Compile Include="Assets\PieceScripts\HTSB.cs" />
     <Compile Include="Assets\CellScripts\Cell1_3.cs" />
     <Compile Include="Assets\Scripts\Frontend\UIScripts\StartUIScripts\CpuDropdown.cs" />
-    <Compile Include="Assets\Scripts\Frontend\UIScripts\StartUIScripts\Hito1Button.cs" />
     <Compile Include="Assets\Scripts\Backend\application_layer\Result\SelectPlayerResult.cs" />
     <Compile Include="Assets\CellScripts\Cell1_2.cs" />
     <Compile Include="Assets\Scripts\Backend\application_layer\Result\Result.cs" />
     <Compile Include="Assets\PieceScripts\HTCW.cs" />
     <Compile Include="Assets\Scripts\Backend\application_layer\Usecases\SelectPlayerUseCase.cs" />
+    <Compile Include="Assets\Scripts\Frontend\UIScripts\Exexuter\Executer.cs" />
     <Compile Include="Assets\PieceScripts\FSSW.cs" />
     <Compile Include="Assets\Scripts\Backend\application_layer\Usecases\PutPiceUseCase.cs" />
     <Compile Include="Assets\Scripts\Backend\Player\ConcretePutPieceAlgorithm.cs" />
@@ -129,7 +131,7 @@
     <Compile Include="Assets\Scripts\Backend\application_layer\Command\Command.cs" />
     <Compile Include="Assets\PieceScripts\FSCW.cs" />
     <Compile Include="Assets\Scripts\Backend\Const\PieceId.cs" />
-    <Compile Include="Assets\Scripts\Frontend\UIScripts\StartUIScripts\NextPlayerSelectButton.cs" />
+    <Compile Include="Assets\Scripts\Frontend\UIScripts\Exexuter\SelectPieceExecuter.cs" />
     <Compile Include="Assets\Scripts\Backend\Adoper\GamePhase.cs" />
     <Compile Include="Assets\Scripts\Backend\domain_layer\Piece.cs" />
     <Compile Include="Assets\CellScripts\Cell4_4.cs" />
@@ -142,15 +144,15 @@
     <Compile Include="Assets\Scripts\Backend\Const\PlayerId.cs" />
     <Compile Include="Assets\Scripts\Backend\View\ViewController.cs" />
     <Compile Include="Assets\PieceScripts\HTCB.cs" />
-    <Compile Include="Assets\Scripts\Frontend\UIScripts\StartUIScripts\Hito2Button.cs" />
     <Compile Include="Assets\Scripts\Backend\Information\SelectPieceInformation.cs" />
     <Compile Include="Assets\PieceScripts\FSCB.cs" />
     <Compile Include="Assets\PieceScripts\HSSW.cs" />
     <Compile Include="Assets\CellScripts\Cell2_4.cs" />
     <Compile Include="Assets\Scripts\Backend\application_layer\Command\GameEndCommand.cs" />
     <Compile Include="Assets\Scripts\Backend\Information\Information.cs" />
-    <Compile Include="Assets\Scripts\Frontend\UIScripts\StartUIScripts\CPU1Button.cs" />
     <Compile Include="Assets\Scripts\Backend\Information\SelectPlayerInformation.cs" />
+    <Compile Include="Assets\Scripts\Frontend\UIScripts\Presenter\SelectPiecePresenter.cs" />
+    <Compile Include="Assets\Scripts\Frontend\UIScripts\Exexuter\SelectPlayerExecuter.cs" />
     <Compile Include="Assets\PlayerIngoGet.cs" />
     <Compile Include="Assets\CellScripts\Cell4_2.cs" />
     <Compile Include="Assets\Scripts\Backend\Adoper\PutPieceByCpuPhase.cs" />
@@ -159,9 +161,9 @@
     <Compile Include="Assets\PieceScripts\FTSB.cs" />
     <Compile Include="Assets\Scripts\Backend\Adoper\SelectPieceByCpuPhase.cs" />
     <Compile Include="Assets\CellScripts\Cell2_1.cs" />
-    <Compile Include="Assets\Scripts\Frontend\UIScripts\StartUIScripts\CPU2Button.cs" />
     <Compile Include="Assets\IPiece.cs" />
     <Compile Include="Assets\PieceScripts\FTCW.cs" />
+    <Compile Include="Assets\Scripts\Frontend\UIScripts\StartUIScripts\GameStartButton1.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

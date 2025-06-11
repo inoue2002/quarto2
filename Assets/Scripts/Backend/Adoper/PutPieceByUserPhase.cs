@@ -50,8 +50,8 @@ public class PutPieceByUserPhase : GamePhase
             }
         }
     }
-    public override Information getInformation()
+    public override Information getInformation(GameController gameController)
     {
-        return null;
+        return new PutPieceInformation(gameController.getBoard().getSelectablePieces());
     }
 }

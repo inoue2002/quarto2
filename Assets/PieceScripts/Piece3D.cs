@@ -21,6 +21,7 @@ public class Piece3D : MonoBehaviour, IPiece
     // ドメイン層のPieceインスタンス
     private Piece domainPiece;
     
+    
     // 子クラスでオーバーライドできるようにvirtualにする
     protected virtual void Awake()
     {
@@ -40,6 +41,8 @@ public class Piece3D : MonoBehaviour, IPiece
         {
             Debug.LogError($"Piece3D: ドメインPieceの作成に失敗しました: {e.Message}");
         }
+
+
     }
     
     // PieceIdを設定するメソッドを追加
@@ -56,6 +59,8 @@ public class Piece3D : MonoBehaviour, IPiece
     
     private void OnMouseDown()
     {
+        GameObject viewControllerObject = GameObject.Find("ViewController");
+        ViewController viewController = viewControllerObject.GetComponent<ViewController>();
         // if (ViewController.Instance != null)
         // {
         //     ViewController.Instance.OnPieceSelected(gameObject);
@@ -65,6 +70,15 @@ public class Piece3D : MonoBehaviour, IPiece
         // {
         //     Debug.LogError("ViewController.Instance が設定されていません！");
         // }
+
+        SelectPieceByUserCommand selectPieceByUserCommand = new SelectPieceByUserCommand();
+        selectPieceByUserCommand.pieceId = piece3dId;
+
+        if(viewController.getInfo().type == GamePhaseType.SelectPieceByUser)
+        {
+            viewController.execute(selectPieceByUserCommand);
+        }
+
     }
     
     // IPieceインターフェースの実装
