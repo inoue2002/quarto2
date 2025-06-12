@@ -80,7 +80,6 @@
     <Compile Include="Assets\Scripts\Backend\application_layer\Command\SelectPieceByUserCommand.cs" />
     <Compile Include="Assets\CellScripts\Cell2_2.cs" />
     <Compile Include="Assets\CellScripts\Cell3_1.cs" />
-    <Compile Include="Assets\GameUIScripts\GameStartButton.cs" />
     <Compile Include="Assets\Scripts\Backend\Player\Player.cs" />
     <Compile Include="Assets\Player2InfoGet.cs" />
     <Compile Include="Assets\ToggleLayoutFixer.cs" />
@@ -97,6 +96,7 @@
     <Compile Include="Assets\PieceScripts\HSCB.cs" />
     <Compile Include="Assets\Scripts\Backend\domain_layer\Pieces.cs" />
     <Compile Include="Assets\CellScripts\Cell4_1.cs" />
+    <Compile Include="Assets\Scripts\Frontend\UIScripts\Exexuter\PutPieceExecuter.cs" />
     <Compile Include="Assets\Scripts\Backend\application_layer\Usecases\SelectPieceUseCase.cs" />
     <Compile Include="Assets\CellScripts\Cell2_3.cs" />
     <Compile Include="Assets\CellScripts\Cell1_4.cs" />
@@ -127,6 +127,7 @@
     <Compile Include="Assets\Scripts\Backend\application_layer\Usecases\PutPiceUseCase.cs" />
     <Compile Include="Assets\Scripts\Backend\Player\ConcretePutPieceAlgorithm.cs" />
     <Compile Include="Assets\CellScripts\Cell3_3.cs" />
+    <Compile Include="Assets\Scripts\Frontend\UIScripts\Presenter\PutPiecePresenter.cs" />
     <Compile Include="Assets\PieceScripts\FTCB.cs" />
     <Compile Include="Assets\Scripts\Backend\application_layer\Command\Command.cs" />
     <Compile Include="Assets\PieceScripts\FSCW.cs" />

@@ -43,11 +43,30 @@ public class GameController
     /// <returns></returns>
     public Result execute(Command command)
     {
+        Debug.Log($"GameController.execute: 実行前フェーズ = {currentPhase.type}, コマンド = {command.GetType().Name}");
+        
         Result result = currentPhase.execute(command,this);
-        currentPhase=currentPhase.getNextPhase(this);
+        
+        Debug.Log($"GameController.execute: コマンド実行結果 = success: {GetResultSuccess(result)}");
+        
+        GamePhase oldPhase = currentPhase;
+        currentPhase = currentPhase.getNextPhase(this);
+        
+        Debug.Log($"GameController.execute: フェーズ遷移 = {oldPhase.type} → {currentPhase.type}");
+        
         result.currentGamePhase = currentPhase.type;
         return result;
     }
+    
+    // Resultの成功状態を取得するヘルパーメソッド
+    private bool GetResultSuccess(Result result)
+    {
+        if (result is SelectPieceResult selectResult) return selectResult.success;
+        if (result is PutPieceResult putResult) return putResult.success;
+        if (result is SelectPlayerResult playerResult) return true; // SelectPlayerResultにはsuccessフィールドがない場合
+        return false;
+    }
+
     public void setPlayerInfo(PlayerInfo playerInfo)
     {
         this.playerInfos.Add(playerInfo);
@@ -83,7 +102,7 @@ public class GameController
     }
     public Information getInformation()
     {
-        Information information = currentPhase.getInformation();
+        Information information = currentPhase.getInformation(this);
         information.type = currentPhase.type;
         return information;
     }

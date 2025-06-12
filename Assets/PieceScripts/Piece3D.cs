@@ -21,7 +21,7 @@ public class Piece3D : MonoBehaviour, IPiece
     // ドメイン層のPieceインスタンス
     private Piece domainPiece;
     
-    
+    private bool isPut = false;
     // 子クラスでオーバーライドできるようにvirtualにする
     protected virtual void Awake()
     {
@@ -59,6 +59,10 @@ public class Piece3D : MonoBehaviour, IPiece
     
     private void OnMouseDown()
     {
+        if(isPut){
+            return;
+        }
+
         GameObject viewControllerObject = GameObject.Find("ViewController");
         ViewController viewController = viewControllerObject.GetComponent<ViewController>();
         // if (ViewController.Instance != null)
@@ -73,8 +77,9 @@ public class Piece3D : MonoBehaviour, IPiece
 
         SelectPieceByUserCommand selectPieceByUserCommand = new SelectPieceByUserCommand();
         selectPieceByUserCommand.pieceId = piece3dId;
+        Debug.Log("Piece3D:ああああああああああああああああああああああああ " + piece3dId);
 
-        if(viewController.getInfo().type == GamePhaseType.SelectPieceByUser)
+        if(viewController.gameController.currentPhase.type == GamePhaseType.SelectPieceByUser)
         {
             viewController.execute(selectPieceByUserCommand);
         }
@@ -85,12 +90,17 @@ public class Piece3D : MonoBehaviour, IPiece
     public void Select()
     {
         isSelected = true;
-        
+        this.gameObject.transform.SetLocalPositionAndRotation(new Vector3(-3.0f, this.gameObject.transform.position.y, -6.0f), this.gameObject.transform.rotation);
         // 選択時の見た目を変更
         if (pieceRenderer != null && selectedMaterial != null)
         {
             pieceRenderer.material = selectedMaterial;
         }
+    }
+
+    public void SetPosition(Position position)
+    {
+        isPut = true;
     }
     
     public void Deselect()

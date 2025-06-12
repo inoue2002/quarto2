@@ -2,6 +2,13 @@ using UnityEngine;
 
 public class HTSB : Piece3D
 {
-    public  PieceId pieceId = PieceId.HTSB; 
+    protected override void Awake()
+    {
+        // piece3dIdフィールドに値を設定
+        SetPieceId(PieceId.HTSB);
+        
+        // 親クラスのAwakeメソッドを呼び出す
+        base.Awake();
+    }
     
 }

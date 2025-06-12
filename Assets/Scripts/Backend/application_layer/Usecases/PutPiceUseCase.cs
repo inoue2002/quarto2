@@ -11,6 +11,8 @@ public class PutPieceUseCase{
         PlayerId winner = board.judge();
         result.success = true;
         result.winner = winner;
+        result.pieceId = pieceId;
+        result.position = position;
         return result;
     }
 }

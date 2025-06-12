@@ -5,11 +5,11 @@ public class Player{
         this.selectPieceAlgorithm = selectPieceAlgorithm;
         this.putPieceAlgorithm = putPieceAlgorithm;
     }
-    public PieceId selectedPiece(Piece[] state){
-        return 0;
+    public PieceId selectPiece(Board board){
+        return selectPieceAlgorithm.SelectPiece(board.getState());
     }
-    public Position putPiece(Piece[] state, Piece piece){
-        throw new System.NotImplementedException();
+    public Position putPiece(Board board){
+        return putPieceAlgorithm.putPiece(board);
     }
 
 

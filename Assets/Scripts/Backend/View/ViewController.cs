@@ -23,21 +23,30 @@ public class ViewController : MonoBehaviour
         gameController.initialize();
         getInfo();
     }
-    private GameController gameController;
+    public GameController gameController;
     public void execute(Command command)
     {
         Result result = gameController.execute(command);
         //ここでバックエンドに情報を送って、バックエンドから情報を受け取る
-        executers[GamePhaseIndex[result.currentGamePhase]].execute(gameController, command);
+        if(result is SelectPlayerResult){
+            executers[0].execute(gameController, result);
+        }
+        else if(result is SelectPieceResult){
+            executers[1].execute(gameController, result);
+        }
+        else if(result is PutPieceResult){
+            executers[3].execute(gameController, result);
+        }
+        getInfo();
         
-
     }
 
     public Information getInfo()
     {
         Information information =  gameController.getInformation();
-        // ここでバックエンドから取得した情報をもとにUIを更新する
-        presenters[GamePhaseIndex[information.type]].handle(gameController, information);
+        // Debug.Log("gamePhaseType:" + gameController.currentPhase.type);
+        // ここでバックエンドから取得した情報をも  とにUIを更新する
+        presenters[GamePhaseIndex[gameController.currentPhase.type]].handle(gameController, information);
 
         return information;
 

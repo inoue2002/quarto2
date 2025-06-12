@@ -1,14 +1,15 @@
-using UnityEngine;
 
-public class ConcretePutPieceAlgorithm : PutPieceAlgorithm//適当に実装
+
+public class ConcretePutPieceAlgorithm : PutPieceAlgorithm//�K���Ɏ���
 {
-    public override Position putPiece(Piece[] state, Piece piece)
+    public override Position putPiece(Board board)
     {
-        for(int i = 0; i < state.Length; i++)
+        
+        for (int i = 0; i < board.getstate().Length; i++)
         {
-            if(state[i] == null)
+            if (board.getstate()[i] == null)
             {
-                return new Position(i%4, i/4);
+                return new Position(i % 4, i / 4);
             }
         }
         return new Position(-1, -1);

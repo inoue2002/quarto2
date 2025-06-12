@@ -1,7 +1,13 @@
-public class ConcreteSelectPieceAlgorithm : SelectPieceAlgorithm//適当に実装
+using System;
+//using System.Diagnostics.Eventing.Reader;
+using System.Linq;
+using System.Xml.Schema;
+
+public class ConcreteSelectPieceAlgorithm : SelectPieceAlgorithm//�K���Ɏ���
 {
     public override PieceId SelectPiece(Piece[] state)
     {
-        return state[0].getPieceId();
+
+        return 0;//board.getSelectablePieces()[0];
     }
 }

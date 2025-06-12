@@ -2,5 +2,12 @@ using UnityEngine;
 
 public class FTSB : Piece3D
 {
-    public PieceId pieceId = PieceId.FTSB;
+    protected override void Awake()
+    {
+        // piece3dIdフィールドに値を設定
+        SetPieceId(PieceId.FTSB);
+        
+        // 親クラスのAwakeメソッドを呼び出す
+        base.Awake();
+    }
 }

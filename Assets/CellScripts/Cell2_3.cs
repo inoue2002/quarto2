@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public class Cell2_3 : MonoBehaviour
+public class Cell2_3 : BoardCell
 {
-    public static Position Position = new Position(2, 3);
+    public void Awake(){
+        x = 2;
+        y = 3;
+    }
 }

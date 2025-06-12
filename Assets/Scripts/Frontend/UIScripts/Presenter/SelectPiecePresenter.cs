@@ -4,6 +4,6 @@ public class SelectPiecePresenter : Presenter
 {
     public override void handle(GameController gameController, Information information)
     {
-        Debug.Log("SelectPiecePresenter");
+        return;
     }
 }

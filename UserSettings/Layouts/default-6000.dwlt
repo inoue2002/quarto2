@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PixelRect:
     serializedVersion: 2
-    x: 720
-    y: 138.66667
+    x: -2560
+    y: 39.333336
     width: 2560
     height: 1349.3334
   m_ShowMode: 4
-  m_Title: Project
+  m_Title: Console
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -345,7 +345,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 50d30000
     m_LastClickedID: 54096
-    m_ExpandedIDs: 00000000bca4000000ca9a3b
+    m_ExpandedIDs: 0000000094a90000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -374,7 +374,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000bca4000000ca9a3b
+    m_ExpandedIDs: 0000000094a90000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -471,7 +471,7 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: e2450000
+      m_SelectedIDs: 
       m_LastClickedID: 0
       m_ExpandedIDs: dc64ffff18d5000034d50000a4d5000014d600003ad60000f0d60000fcd80000acd9000036da0000
       m_RenameOverlay:
@@ -1007,7 +1007,7 @@ MonoBehaviour:
   m_AudioPlay: 0
   m_DebugDrawModesUseInteractiveLightBakingData: 0
   m_Position:
-    m_Target: {x: 1055.012, y: 587.49255, z: -18.360546}
+    m_Target: {x: 0, y: 10, z: -11}
     speed: 2
     m_Value: {x: 1055.012, y: 587.49255, z: -18.360546}
   m_RenderMode: 0
@@ -1055,11 +1055,11 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.020017372, y: 0.020245505, z: -0.0003906427, w: 0.999944}
+    m_Target: {x: 0.2454823, y: 0.020391831, z: -0.005968347, w: 0.96953607}
     speed: 2
     m_Value: {x: 0.020017372, y: -0.020245504, z: 0.00039064267, w: -0.9999439}
   m_Size:
-    m_Target: 567.7563
+    m_Target: 0.2883848
     speed: 2
     m_Value: 567.7563
   m_Ortho:
@@ -1186,7 +1186,7 @@ MonoBehaviour:
       height: 720
     m_MinimalGUI: 1
   m_defaultScale: 0.95694447
-  m_LastWindowPixelSize: {x: 2197, y: 1065}
+  m_LastWindowPixelSize: {x: 1464.6666, y: 710}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
   m_LowResolutionForAspectRatios: 01000000000000000000

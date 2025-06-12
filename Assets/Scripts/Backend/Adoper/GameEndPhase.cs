@@ -1,5 +1,9 @@
 public class GameEndPhase : GamePhase
 {
+    public GameEndPhase()
+    {
+        type = GamePhaseType.GameEnd;
+    }
     public override Result execute(Command command, GameController gameController)
     {
         return null;
@@ -8,8 +12,8 @@ public class GameEndPhase : GamePhase
     {
         return new SelectPlayerPhase();
     }
-    public override Information getInformation()
+    public override Information getInformation(GameController gameController)
     {
-        return null;
+        return new Information();
     }
 }

@@ -58,7 +58,7 @@ public class SelectPlayerPhase : GamePhase
             }
         }
     }
-    public override Information getInformation()
+    public override Information getInformation(GameController gameController)
     {
         List<string> selectPieceAlgorithmNames = new List<string>();
         List<string> putPieceAlgorithmNames = new List<string>();
