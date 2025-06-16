@@ -8,12 +8,19 @@ public class PutPieceExecuter : Executer
         PutPieceResult putPieceResult = (PutPieceResult)result;
         GameObject piece = GameObject.Find(putPieceResult.pieceId.ToString());
         GameObject pieceCircle = GameObject.Find("pieceCircle" + ((4 - putPieceResult.position.X) * 4 + putPieceResult.position.Y) + "-black"); //これ変
-        // Debug.Log(piece.transform.position.x + " " + piece.transform.position.y + " " + piece.transform.position.z);
-        // Debug.Log((4 - putPieceResult.position.X) * 4 + putPieceResult.position.Y);
-        Debug.Log(pieceCircle.transform.position.x + " " + pieceCircle.transform.position.y + " " + pieceCircle.transform.position.z);
+        
+        Debug.Log($"選択されたピース: ID={putPieceResult.pieceId}, 現在位置=({piece.transform.position.x}, {piece.transform.position.y}, {piece.transform.position.z})");
+        Debug.Log($"配置先マス: 位置=({putPieceResult.position.X}, {putPieceResult.position.Y}), マス位置=({pieceCircle.transform.position.x}, {pieceCircle.transform.position.y}, {pieceCircle.transform.position.z})");
+        
         piece.GetComponent<Piece3D>().SetPosition(putPieceResult.position);
-        //Debug.Log(piece.transform.position);
-        //Debug.Log(pieceCircle.transform.position.x + " " + pieceCircle.transform.position.y + " " + pieceCircle.transform.position.z);
-        piece.transform.SetPositionAndRotation(new Vector3(pieceCircle.transform.position.x, piece.transform.position.y, pieceCircle.transform.position.z), piece.transform.rotation);
+        
+        float yPosition = 0f;
+        if (piece.transform.localScale.y == 0.5f || putPieceResult.pieceId.ToString() == "FSSW" || putPieceResult.pieceId.ToString() == "FSSB")
+        {
+            yPosition = -0.5f;
+        }
+        piece.transform.SetPositionAndRotation(new Vector3(pieceCircle.transform.position.x, yPosition, pieceCircle.transform.position.z), piece.transform.rotation);
+        
+        Debug.Log($"ピース配置完了: 新しい位置=({piece.transform.position.x}, {piece.transform.position.y}, {piece.transform.position.z}), PieceID={putPieceResult.pieceId}");
     }
 }
