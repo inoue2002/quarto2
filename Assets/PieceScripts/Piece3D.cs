@@ -31,16 +31,7 @@ public class Piece3D : MonoBehaviour, IPiece
             defaultMaterial = pieceRenderer.material;
         }
         
-        // ドメイン層のPieceインスタンスを作成
-        try
-        {
-            domainPiece = new Piece(piece3dId);
-            Debug.Log($"Piece3D: {gameObject.name} のドメインPieceを作成しました。PieceId: {piece3dId}");
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError($"Piece3D: ドメインPieceの作成に失敗しました: {e.Message}");
-        }
+
 
 
     }
@@ -77,7 +68,7 @@ public class Piece3D : MonoBehaviour, IPiece
 
         SelectPieceByUserCommand selectPieceByUserCommand = new SelectPieceByUserCommand();
         selectPieceByUserCommand.pieceId = piece3dId;
-        Debug.Log("Piece3D:ああああああああああああああああああああああああ " + piece3dId);
+
 
         if(viewController.gameController.currentPhase.type == GamePhaseType.SelectPieceByUser)
         {

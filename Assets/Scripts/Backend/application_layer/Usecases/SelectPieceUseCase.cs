@@ -14,9 +14,7 @@ public class SelectPieceUseCase
         board.setSelectedPiece(pieceId);
         result.success = true;
         result.pieceId = pieceId;
-        Debug.Log("SelectPieceUseCase: " + result.success);
-        Debug.Log("SelectPieceUseCase: " + result.pieceId);
-        Debug.Log("SelectPieceUseCase: " + result.currentGamePhase);
+
         return result;
     }
 }

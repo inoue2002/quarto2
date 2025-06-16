@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System;
+using UnityEngine;
 public class Board
 {
     private Piece selectedPiece;
-    private Piece[] state = { null }; //16この配列
+    private Piece[] state; //16この配列
     private PlayerId currentPlayer;
     private Dictionary<PieceId, Piece> pieces;
     private List<int[]> lines = new List<int[]>();
@@ -37,7 +38,7 @@ public class Board
 
     public void putPiece(PieceId pieceId, Position position)
     {
-        state[(int)(position.Y * 4 + position.X)] = pieces[pieceId];
+        state[(int)((position.Y - 1) * 4 + ( position.X - 1 ))] = pieces[pieceId];
         selectablePieces.Remove(pieceId);
         //selectedPiece = null;
     }
@@ -61,12 +62,17 @@ public class Board
         {
             if (state[line[0]] != null && state[line[1]] != null && state[line[2]] != null && state[line[3]] != null)
             {
+                Debug.Log($"Quarto判定: ライン {line[0]},{line[1]},{line[2]},{line[3]} をチェック");
+                Debug.Log($"駒1: {state[line[0]].getPieceId()}, 駒2: {state[line[1]].getPieceId()}, 駒3: {state[line[2]].getPieceId()}, 駒4: {state[line[3]].getPieceId()}");
+                
                 if (state[line[0]].isQuarto(new Piece[] { state[line[1]], state[line[2]], state[line[3]] }))
                 {
+                    Debug.Log($"Quarto成立！ 勝者: {currentPlayer}");
                     return currentPlayer;
                 }
             }
         }
+        Debug.Log("Quartoは成立していません");
         return PlayerId.None;
     }
     public PlayerId getPlayerId()
@@ -75,7 +81,9 @@ public class Board
     }
     public bool canPutPiece(Position position)
     {
-        return state[(int)(position.Y * 4 + position.X)] == null;
+
+        Debug.Log(position.Y + " " + position.X);
+        return state[(int)((position.Y - 1 ) * 4 + position.X - 1)] == null;
     }
     public bool canSelectPiece(PieceId pieceId)
     {

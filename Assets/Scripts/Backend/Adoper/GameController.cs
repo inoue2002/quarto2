@@ -26,12 +26,9 @@ public class GameController
             
             if (playerInfos == null) playerInfos = new List<PlayerInfo>();
             else playerInfos.Clear();
-            
-            Debug.Log("GameControllerが初期化されました");
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"initialize()メソッドでエラーが発生しました: {e.Message}");
             throw;
         }
     }
@@ -43,16 +40,10 @@ public class GameController
     /// <returns></returns>
     public Result execute(Command command)
     {
-        Debug.Log($"GameController.execute: 実行前フェーズ = {currentPhase.type}, コマンド = {command.GetType().Name}");
-        
         Result result = currentPhase.execute(command,this);
-        
-        Debug.Log($"GameController.execute: コマンド実行結果 = success: {GetResultSuccess(result)}");
         
         GamePhase oldPhase = currentPhase;
         currentPhase = currentPhase.getNextPhase(this);
-        
-        Debug.Log($"GameController.execute: フェーズ遷移 = {oldPhase.type} → {currentPhase.type}");
         
         result.currentGamePhase = currentPhase.type;
         return result;
