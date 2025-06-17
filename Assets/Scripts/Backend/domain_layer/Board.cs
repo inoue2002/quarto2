@@ -38,7 +38,8 @@ public class Board
 
     public void putPiece(PieceId pieceId, Position position)
     {
-        state[(int)((position.Y) * 4 + ( position.X))] = pieces[pieceId];
+        // 0-basedの座標系に合わせて計算
+        state[(int)(position.Y * 4 + position.X)] = pieces[pieceId];
         selectablePieces.Remove(pieceId);
         //selectedPiece = null;
     }
@@ -81,9 +82,9 @@ public class Board
     }
     public bool canPutPiece(Position position)
     {
-
         Debug.Log(position.Y + " " + position.X);
-        return state[(int)((position.Y) * 4 + position.X)] == null;
+        // 0-basedの座標系に合わせて計算
+        return state[(int)(position.Y * 4 + position.X)] == null;
     }
     public bool canSelectPiece(PieceId pieceId)
     {

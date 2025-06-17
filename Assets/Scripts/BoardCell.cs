@@ -3,10 +3,10 @@ using UnityEngine;
 public class BoardCell : MonoBehaviour
 {
     [SerializeField]
-    protected int x; // X座標（1-4）
+    protected int x; // X座標（0-3）
     
     [SerializeField]
-    protected int y; // Y座標（1-4）
+    protected int y; // Y座標（0-3）
     
     // セルの位置を取得
     public Position GetPosition()
@@ -39,7 +39,8 @@ public class BoardCell : MonoBehaviour
 
 
         PutPieceByUserCommand putPieceByUserCommand = new PutPieceByUserCommand();  //ここでコマンドを作成
-        putPieceByUserCommand.position = this.GetPosition();    //ここでコマンドに位置を設定
+        putPieceByUserCommand.position = this.GetPosition();    //ここでコマンドに位置を設定]
+        Debug.Log("putPieceByUserCommand.position: " + putPieceByUserCommand.position);
         viewController.execute(putPieceByUserCommand);  //ここでコマンドを実行
         //this.gameObject.transform.SetLocalPositionAndRotation(new Vector3(0.0f, this.gameObject.transform.position.y, 0.0f), this.gameObject.transform.rotation);   //ここでオブジェクトを元の位置に戻す
     }

@@ -47,7 +47,7 @@ public class ViewController : MonoBehaviour
     {
         Information information =  gameController.getInformation();
         // Debug.Log("gamePhaseType:" + gameController.currentPhase.type);
-        // ここでバックエンドから取得した情報をも  とにUIを更新する
+        // ここでバックエンドから取得した情報をもとにUIを更新する
         presenters[GamePhaseIndex[gameController.currentPhase.type]].handle(gameController, information);
 
         return information;
