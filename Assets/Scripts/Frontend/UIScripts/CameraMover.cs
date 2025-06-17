@@ -14,8 +14,8 @@ public class CameraMover : MonoBehaviour//MainCameraにアタッチ
     // P：回転を実行時の状態に初期化する
 
 	//カメラの移動量
-	[SerializeField, Range(0.1f, 10.0f)]
-	private float _positionStep = 2.0f;
+	[SerializeField, Range(10.0f, 20.0f)]
+	private float _positionStep = 10.0f;
 
     //マウス感度
     [SerializeField, Range(30.0f, 150.0f)]

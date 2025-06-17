@@ -38,7 +38,7 @@ public class Board
 
     public void putPiece(PieceId pieceId, Position position)
     {
-        state[(int)((position.Y - 1) * 4 + ( position.X - 1 ))] = pieces[pieceId];
+        state[(int)((position.Y) * 4 + ( position.X))] = pieces[pieceId];
         selectablePieces.Remove(pieceId);
         //selectedPiece = null;
     }
@@ -83,7 +83,7 @@ public class Board
     {
 
         Debug.Log(position.Y + " " + position.X);
-        return state[(int)((position.Y - 1 ) * 4 + position.X - 1)] == null;
+        return state[(int)((position.Y) * 4 + position.X)] == null;
     }
     public bool canSelectPiece(PieceId pieceId)
     {

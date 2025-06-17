@@ -3,7 +3,7 @@ using UnityEngine;
 public class Cell2_3 : BoardCell
 {
     public void Awake(){
-        x = 2;
-        y = 3;
+        x = 1;
+        y = 2;
     }
 }

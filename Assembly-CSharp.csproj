@@ -110,6 +110,7 @@
     <Compile Include="Assets\PieceScripts\HTSW.cs" />
     <Compile Include="Assets\Scripts\Backend\domain_layer\Board.cs" />
     <Compile Include="Assets\ToggleIsOnReset.cs" />
+    <Compile Include="Assets\Scripts\Frontend\UIScripts\NextTurnButton.cs" />
     <Compile Include="Assets\CustomToggleGroup.cs" />
     <Compile Include="Assets\Scripts\Backend\Const\PlayerType.cs" />
     <Compile Include="Assets\Player2UIManager.cs" />
@@ -136,6 +137,7 @@
     <Compile Include="Assets\Scripts\Backend\Adoper\GamePhase.cs" />
     <Compile Include="Assets\Scripts\Backend\domain_layer\Piece.cs" />
     <Compile Include="Assets\CellScripts\Cell4_4.cs" />
+    <Compile Include="Assets\Scripts\Frontend\UIScripts\CameraMover.cs" />
     <Compile Include="Assets\GameManager.cs" />
     <Compile Include="Assets\Scripts\Backend\application_layer\Command\PutPieceByCpuCommand.cs" />
     <Compile Include="Assets\Scripts\Backend\Adoper\PutPieceByUserPhase.cs" />
@@ -149,6 +151,7 @@
     <Compile Include="Assets\PieceScripts\FSCB.cs" />
     <Compile Include="Assets\PieceScripts\HSSW.cs" />
     <Compile Include="Assets\CellScripts\Cell2_4.cs" />
+    <Compile Include="Assets\Scripts\QuartoGameController.cs" />
     <Compile Include="Assets\Scripts\Backend\application_layer\Command\GameEndCommand.cs" />
     <Compile Include="Assets\Scripts\Backend\Information\Information.cs" />
     <Compile Include="Assets\Scripts\Backend\Information\SelectPlayerInformation.cs" />

@@ -52,7 +52,7 @@ public class SelectPieceByUserPhase : GamePhase
         else
         {
             PlayerType putPiecePlayerType = gameController.getPlayerType(ActionType.PutPiece);
-
+            Debug.Log("putPiecePlayerType: " + putPiecePlayerType); //ここがCPUになってない
             
             if (putPiecePlayerType == PlayerType.Cpu)
             {

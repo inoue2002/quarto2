@@ -1,4 +1,4 @@
-public class SelectPieceByCpuCommand : Command
+public class PutPieceByCpuCommand : Command
 {
     
 

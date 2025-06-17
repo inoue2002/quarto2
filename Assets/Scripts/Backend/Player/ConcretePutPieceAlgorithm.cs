@@ -10,6 +10,7 @@ public class ConcretePutPieceAlgorithm : PutPieceAlgorithm//ï¿½Kï¿½ï¿½ï¿½ÉŽï¿½ï¿
             if (board.getstate()[i] == null)
             {
                 return new Position(i % 4, i / 4);
+                
             }
         }
         return new Position(-1, -1);

@@ -46,6 +46,8 @@ public class GameController
         currentPhase = currentPhase.getNextPhase(this);
         
         result.currentGamePhase = currentPhase.type;
+
+
         return result;
     }
     

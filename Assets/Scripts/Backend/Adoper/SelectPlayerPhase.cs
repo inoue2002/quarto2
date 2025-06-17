@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 
 /// <summary>
@@ -28,10 +29,12 @@ public class SelectPlayerPhase : GamePhase
         //playerのインスタンスを生成して，gameControllerにセット
         if(playerInfo.SelectPiece == PlayerType.Cpu)
         {
+            Debug.Log("SelectPieceAlgorithmName: " + ((SelectPlayerCommand)command).SelectPieceAlgorithmName);
             selectPieceAlgorithm=selectPieceAlgorithms[ ((SelectPlayerCommand)command).SelectPieceAlgorithmName];
         }
         if(playerInfo.PutPiece == PlayerType.Cpu)
         {
+            Debug.Log("PutPieceAlgorithmName: " + ((SelectPlayerCommand)command).PutPieceAlgorithmName);
             putPieceAlgorithm=putPieceAlgorithms[ ((SelectPlayerCommand)command).PutPieceAlgorithmName];
         }
         Player player = new Player(selectPieceAlgorithm,putPieceAlgorithm);
@@ -48,6 +51,7 @@ public class SelectPlayerPhase : GamePhase
         }
         else
         {
+            Debug.Log("gameController.getPlayerType(ActionType.SelectPiece): " + gameController.getPlayerType(ActionType.SelectPiece));
             if(gameController.getPlayerType(ActionType.SelectPiece) == PlayerType.Cpu)
             {
                 return new SelectPieceByCpuPhase();

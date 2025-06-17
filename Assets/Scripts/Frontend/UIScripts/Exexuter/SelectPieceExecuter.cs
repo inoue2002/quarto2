@@ -24,6 +24,8 @@ public class SelectPieceExecuter : Executer
         
         if (piece != null)
         {
+
+            Debug.Log("piece: " + piece);
             Piece3D piece3D = piece.GetComponent<Piece3D>();
             if (piece3D != null)
             {
