@@ -40,13 +40,18 @@ public class GameController
     /// <returns></returns>
     public Result execute(Command command)
     {
+        Debug.Log($"=== コマンド実行 ===");
+        Debug.Log($"現在のフェーズ: {currentPhase.type}");
+        Debug.Log($"実行コマンド: {command.GetType().Name}");
+        
         Result result = currentPhase.execute(command,this);
         
         GamePhase oldPhase = currentPhase;
         currentPhase = currentPhase.getNextPhase(this);
         
+        Debug.Log($"フェーズ遷移: {oldPhase.type} → {currentPhase.type}");
+        
         result.currentGamePhase = currentPhase.type;
-
 
         return result;
     }
@@ -63,6 +68,10 @@ public class GameController
     public void setPlayerInfo(PlayerInfo playerInfo)
     {
         this.playerInfos.Add(playerInfo);
+        
+        Debug.Log("=== プレイヤー情報設定 ===");
+        Debug.Log($"プレイヤー{playerInfos.Count}: SelectPiece={playerInfo.SelectPiece}, PutPiece={playerInfo.PutPiece}");
+        Debug.Log($"現在の登録プレイヤー数: {playerInfos.Count}");
     }
     public void setPlayer(Player player)
     {
@@ -76,13 +85,22 @@ public class GameController
     public PlayerType getPlayerType(ActionType actionType)
     {
         PlayerId currentPlayer=board.getPlayerId();
+        
+        Debug.Log("=== プレイヤータイプ取得 ===");
+        Debug.Log($"現在のプレイヤー: {currentPlayer} (インデックス: {(int)currentPlayer})");
+        Debug.Log($"要求されたアクション: {actionType}");
+        
         if(actionType == ActionType.SelectPiece)
         {
-            return playerInfos[(int)currentPlayer].SelectPiece;
+            PlayerType selectType = playerInfos[(int)currentPlayer].SelectPiece;
+            Debug.Log($"SelectPieceタイプ: {selectType}");
+            return selectType;
         }
         else
         {
-            return playerInfos[(int)currentPlayer].PutPiece;
+            PlayerType putType = playerInfos[(int)currentPlayer].PutPiece;
+            Debug.Log($"PutPieceタイプ: {putType}");
+            return putType;
         }
     }
     public Board getBoard()

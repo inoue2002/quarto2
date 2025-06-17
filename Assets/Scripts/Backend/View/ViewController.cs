@@ -27,7 +27,6 @@ public class ViewController : MonoBehaviour
     public void execute(Command command)
     {
         Result result = gameController.execute(command);
-        Debug.Log("result:" + result);
         Debug.Log("result.currentGamePhase:" + result.currentGamePhase);
         //ここでバックエンドに情報を送って、バックエンドから情報を受け取る
         if(result is SelectPlayerResult){

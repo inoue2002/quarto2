@@ -8,6 +8,10 @@ public class PutPieceUseCase{
             return result;
         }
         board.putPiece(pieceId, position);
+        
+        // 駒配置後にプレイヤー交代
+        board.changePlayer();
+        
         PlayerId winner = board.judge();
         result.success = true;
         result.winner = winner;
