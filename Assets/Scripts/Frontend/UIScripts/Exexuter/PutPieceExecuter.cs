@@ -8,7 +8,7 @@ public class PutPieceExecuter : Executer
         PutPieceResult putPieceResult = (PutPieceResult)result;
         GameObject piece = GameObject.Find(putPieceResult.pieceId.ToString());
         // 0-basedの座標系に合わせて計算を修正
-        GameObject pieceCircle = GameObject.Find("pieceCircle" + (putPieceResult.position.Y * 4 + putPieceResult.position.X) + "-black");
+        GameObject pieceCircle = GameObject.Find("pieceCircle" + ((3 - putPieceResult.position.X) * 4 + (putPieceResult.position.Y + 1)) + "-black");
         
         Debug.Log($"選択されたピース: ID={putPieceResult.pieceId}, 現在位置=({piece.transform.position.x}, {piece.transform.position.y}, {piece.transform.position.z})");
         Debug.Log($"配置先マス: 位置=({putPieceResult.position.X}, {putPieceResult.position.Y}), マス位置=({pieceCircle.transform.position.x}, {pieceCircle.transform.position.y}, {pieceCircle.transform.position.z})");

@@ -48,10 +48,6 @@ public class PutPieceByCpuPhase : GamePhase
             {
                 return new SelectPieceByCpuPhase();
             }
-            else if (gameController.board.getState().Length == 16)
-            {
-                return new GameEndPhase();
-            }
             else
             {
                 return new SelectPieceByUserPhase();

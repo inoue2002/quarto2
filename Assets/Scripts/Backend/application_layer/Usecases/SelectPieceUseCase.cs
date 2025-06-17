@@ -11,6 +11,7 @@ public class SelectPieceUseCase
             result.success = false;
             return result;
         }
+        board.changePlayer(board.getPlayerId());
         board.setSelectedPiece(pieceId);
         result.success = true;
         result.pieceId = pieceId;

@@ -16,6 +16,11 @@ public class SelectPieceExecuter : Executer
             Debug.LogError($"SelectPieceExecuter: Expected SelectPieceResult but got {result.GetType().Name}");
             return;
         }
+
+        if(!selectPieceResult.success)
+        {
+            return;
+        }
          
         PieceId pieceId = selectPieceResult.pieceId;
         

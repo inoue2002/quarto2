@@ -14,6 +14,7 @@ public class ViewController : MonoBehaviour
         {GamePhaseType.SelectPieceByCpu, 2},
         {GamePhaseType.PutPieceByUser, 3},
         {GamePhaseType.PutPieceByCpu, 4},
+        {GamePhaseType.GameEnd, 5},
     };
 
 
@@ -46,7 +47,7 @@ public class ViewController : MonoBehaviour
     public Information getInfo()
     {
         Information information =  gameController.getInformation();
-        // Debug.Log("gamePhaseType:" + gameController.currentPhase.type);
+        Debug.Log("gamePhaseType:" + gameController.currentPhase.type);
         // ここでバックエンドから取得した情報をもとにUIを更新する
         presenters[GamePhaseIndex[gameController.currentPhase.type]].handle(gameController, information);
 
