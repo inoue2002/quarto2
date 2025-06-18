@@ -140,12 +140,14 @@
     <Compile Include="Assets\GameManager.cs" />
     <Compile Include="Assets\Scripts\Backend\application_layer\Command\PutPieceByCpuCommand.cs" />
     <Compile Include="Assets\Scripts\Backend\Adoper\PutPieceByUserPhase.cs" />
+    <Compile Include="Assets\Scripts\Frontend\UIScripts\Exexuter\GameEndExecuter.cs" />
     <Compile Include="Assets\Player1UIManager.cs" />
     <Compile Include="Assets\PieceScripts\Piece3D.cs" />
     <Compile Include="Assets\CellScripts\Cell1_1.cs" />
     <Compile Include="Assets\Scripts\Backend\Const\PlayerId.cs" />
     <Compile Include="Assets\Scripts\Backend\View\ViewController.cs" />
     <Compile Include="Assets\PieceScripts\HTCB.cs" />
+    <Compile Include="Assets\Scripts\Frontend\UIScripts\Presenter\GemeEndPresenter.cs" />
     <Compile Include="Assets\Scripts\Backend\Information\SelectPieceInformation.cs" />
     <Compile Include="Assets\PieceScripts\FSCB.cs" />
     <Compile Include="Assets\PieceScripts\HSSW.cs" />
@@ -163,9 +165,11 @@
     <Compile Include="Assets\Scripts\Backend\Adoper\GameController.cs" />
     <Compile Include="Assets\PieceScripts\FTSB.cs" />
     <Compile Include="Assets\Scripts\Backend\Adoper\SelectPieceByCpuPhase.cs" />
+    <Compile Include="Assets\Scripts\Frontend\UIScripts\FreeViewButton.cs" />
     <Compile Include="Assets\CellScripts\Cell2_1.cs" />
     <Compile Include="Assets\IPiece.cs" />
     <Compile Include="Assets\PieceScripts\FTCW.cs" />
+    <Compile Include="Assets\Scripts\Frontend\UIScripts\GameEndButton.cs" />
     <Compile Include="Assets\Scripts\Frontend\UIScripts\StartUIScripts\GameStartButton1.cs" />
   </ItemGroup>
   <ItemGroup>

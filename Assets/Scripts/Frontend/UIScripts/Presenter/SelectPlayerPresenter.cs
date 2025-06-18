@@ -11,6 +11,8 @@ public class SelectPlayerPresenter : Presenter
     public Toggle CpuSelectToggle;
 
     public GameObject CanvasPlayer;
+
+
     public void Awake()
     {
 

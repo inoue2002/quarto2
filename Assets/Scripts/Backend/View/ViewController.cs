@@ -14,12 +14,19 @@ public class ViewController : MonoBehaviour
         {GamePhaseType.SelectPieceByCpu, 2},
         {GamePhaseType.PutPieceByUser, 3},
         {GamePhaseType.PutPieceByCpu, 4},
+        {GamePhaseType.GameEnd, 5},
     };
 
 
     public void Awake()
     {
         gameController =  new GameController();
+        gameController.initialize();
+        getInfo();
+    }
+
+    public void reinitialize()
+    {
         gameController.initialize();
         getInfo();
     }
@@ -36,7 +43,12 @@ public class ViewController : MonoBehaviour
             executers[1].execute(gameController, result);
         }
         else if(result is PutPieceResult){
-            executers[3].execute(gameController, result);
+            if(((PutPieceResult)result).winner == PlayerId.None){
+                executers[3].execute(gameController, result);
+            }
+            else{
+                executers[5].execute(gameController, result);
+            }
         }
         getInfo();
         

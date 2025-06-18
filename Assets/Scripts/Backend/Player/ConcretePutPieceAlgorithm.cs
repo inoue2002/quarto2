@@ -1,6 +1,6 @@
 
 
-public class ConcretePutPieceAlgorithm : PutPieceAlgorithm//�K���Ɏ���
+public class ConcretePutPieceAlgorithm : PutPieceAlgorithm
 {
     public override Position putPiece(Board board)
     {

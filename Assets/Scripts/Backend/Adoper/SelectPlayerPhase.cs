@@ -16,7 +16,7 @@ public class SelectPlayerPhase : GamePhase
         type = GamePhaseType.SelectPlayer;
         //人が書いたアルゴリズムを手書きで追加
         selectPieceAlgorithms.Add("defo",new ConcreteSelectPieceAlgorithm());
-        putPieceAlgorithms.Add("defo",new ConcretePutPieceAlgorithm());
+        putPieceAlgorithms.Add("DEFO",new ConcretePutPieceAlgorithm());
     }
     public override Result execute(Command command, GameController gameController)
     {
@@ -34,7 +34,7 @@ public class SelectPlayerPhase : GamePhase
         
         // アルゴリズム名のデフォルト値を設定
         string selectPieceAlgorithmName = "defo";
-        string putPieceAlgorithmName = "defo";
+        string putPieceAlgorithmName = "DEFO";
         
         if (!string.IsNullOrEmpty(selectPlayerCommand.SelectPieceAlgorithmName))
         {

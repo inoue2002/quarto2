@@ -35,15 +35,14 @@ public class SelectPieceByCpuPhase : GamePhase
         }
         else
         {
-            // 駒選択後は、相手プレイヤーがPutPieceを行う
+            // 駒選択後は現在のプレイヤー（交代済み）がPutPieceを行う
             PlayerId currentPlayer = gameController.getBoard().getPlayerId();
-            PlayerId putPiecePlayer = (currentPlayer == PlayerId.Player1) ? PlayerId.Player2 : PlayerId.Player1;
             
-            Debug.Log($"CPU駒選択成功 - 現在のプレイヤー: {currentPlayer}");
-            Debug.Log($"次にPutPieceするプレイヤー: {putPiecePlayer}");
+            Debug.Log($"CPU駒選択成功 - 現在のプレイヤー（交代後）: {currentPlayer}");
+            Debug.Log($"次にPutPieceするプレイヤー: {currentPlayer}");
             
-            // 相手プレイヤーのPutPieceタイプを確認
-            PlayerType putPiecePlayerType = gameController.playerInfos[(int)putPiecePlayer].PutPiece;
+            // 現在のプレイヤーのPutPieceタイプを確認
+            PlayerType putPiecePlayerType = gameController.playerInfos[(int)currentPlayer].PutPiece;
             Debug.Log($"PutPieceプレイヤーのタイプ: {putPiecePlayerType}");
             
             if (putPiecePlayerType == PlayerType.Cpu)

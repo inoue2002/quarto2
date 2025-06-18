@@ -13,6 +13,9 @@ public class PutPieceByCpuPhase : GamePhase
     {
         Board board = gameController.getBoard();
         PutPieceUseCase putPieceUseCase = new PutPieceUseCase();
+
+        Debug.Log("現在のプレイヤーは"+gameController.getBoard().getPlayerId());
+
         Player player = gameController.getPlayer();
         Position position = player.putPiece(board);
         PutPieceResult result = (PutPieceResult)putPieceUseCase.handle(board, board.getSelectedPieceId(), position);
