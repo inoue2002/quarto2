@@ -23,8 +23,7 @@ public class ViewController : MonoBehaviour
     {
         gameController =  new GameController();
         gameController.initialize();
-        gameController.canvas = GameObject.Find("Canvas");
-        gameController.cpuNextButton = GameObject.Find("CpuNextButton");
+        
         
         getInfo();
     }
