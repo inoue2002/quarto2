@@ -15,6 +15,7 @@ public class ViewController : MonoBehaviour
         {GamePhaseType.PutPieceByUser, 3},
         {GamePhaseType.PutPieceByCpu, 4},
         {GamePhaseType.GameEnd, 5},
+        {GamePhaseType.CpuNext, 6},
     };
 
 
@@ -22,6 +23,9 @@ public class ViewController : MonoBehaviour
     {
         gameController =  new GameController();
         gameController.initialize();
+        gameController.canvas = GameObject.Find("Canvas");
+        gameController.cpuNextButton = GameObject.Find("CpuNextButton");
+        
         getInfo();
     }
     public GameController gameController;

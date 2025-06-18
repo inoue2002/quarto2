@@ -132,6 +132,7 @@
     <Compile Include="Assets\PieceScripts\FTCB.cs" />
     <Compile Include="Assets\Scripts\Backend\application_layer\Command\Command.cs" />
     <Compile Include="Assets\PieceScripts\FSCW.cs" />
+    <Compile Include="Assets\Scripts\Frontend\UIScripts\Exexuter\CpuNextButtonExecuter.cs" />
     <Compile Include="Assets\Scripts\Backend\Const\PieceId.cs" />
     <Compile Include="Assets\Scripts\Frontend\UIScripts\Exexuter\SelectPieceExecuter.cs" />
     <Compile Include="Assets\Scripts\Backend\Adoper\GamePhase.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="Assets\Scripts\Backend\application_layer\Command\GameEndCommand.cs" />
     <Compile Include="Assets\Scripts\Backend\Information\Information.cs" />
     <Compile Include="Assets\Scripts\Backend\Information\SelectPlayerInformation.cs" />
+    <Compile Include="Assets\Scripts\Frontend\UIScripts\Presenter\CpuNextButtonPresenter.cs" />
     <Compile Include="Assets\Scripts\Frontend\UIScripts\Presenter\SelectPiecePresenter.cs" />
     <Compile Include="Assets\Scripts\Frontend\UIScripts\Exexuter\SelectPlayerExecuter.cs" />
     <Compile Include="Assets\PlayerIngoGet.cs" />

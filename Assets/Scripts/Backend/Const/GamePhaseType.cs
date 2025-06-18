@@ -6,4 +6,5 @@ public enum GamePhaseType
     PutPieceByUser,
     PutPieceByCpu,
     GameEnd,
+    CpuNext,
 }
