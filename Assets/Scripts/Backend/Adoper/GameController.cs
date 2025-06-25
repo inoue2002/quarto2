@@ -29,7 +29,7 @@ public class GameController
         }
         catch (System.Exception e)
         {
-            throw;
+            throw new Exception("GameControllerの初期化に失敗しました");
         }
     }
     

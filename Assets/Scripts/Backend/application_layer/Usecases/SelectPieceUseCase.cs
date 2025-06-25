@@ -11,7 +11,7 @@ public class SelectPieceUseCase
             result.success = false;
             return result;
         }
-        board.changePlayer(board.getPlayerId());
+        board.changePlayer();
         board.setSelectedPiece(pieceId);
         
         // 駒選択後にプレイヤー交代（正しいQuartoルール）
