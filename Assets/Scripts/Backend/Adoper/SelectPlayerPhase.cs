@@ -37,8 +37,8 @@ public class SelectPlayerPhase : GamePhase
         SelectPlayerCommand selectPlayerCommand = (SelectPlayerCommand)command;
         
         // アルゴリズム名のデフォルト値を設定
-        string selectPieceAlgorithmName = "defo";
-        string putPieceAlgorithmName = "DEFO";
+        string selectPieceAlgorithmName = "Youkan";
+        string putPieceAlgorithmName = "Youkan";
         
         if (!string.IsNullOrEmpty(selectPlayerCommand.SelectPieceAlgorithmName))
         {

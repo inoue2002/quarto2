@@ -1,48 +1,128 @@
 using System;
-using System.Linq;
-using System.Xml.Schema;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class YoukanSelectPieceAlgorithm : SelectPieceAlgorithm//順番に駒を選ぶアルゴリズム
+public class YoukanSelectPieceAlgorithm : SelectPieceAlgorithm
 {
-    private static int currentPieceIndex = 0; // 静的カウンター（次に選ぶ駒のインデックス）
-    
     public override PieceId SelectPiece(Piece[] state)
     {
-        // 全ての駒ID（0〜15）を順番に試す
+        // 盤面に存在しない（未配置）の駒IDリストを返す
+        List<PieceId> selectablePieces = GetSelectablePieces(state);
+        // 1手でクリアされてしまう駒を除外した安全な駒リストを返す
+        List<PieceId> safePieces = GetSafePieces(state, selectablePieces);
+
+        List<PieceId> finalCandidates = safePieces.Count > 0 ? safePieces : selectablePieces;
+
+        return SelectRandomPiece(finalCandidates, safePieces.Count > 0);
+    }
+
+    /// <summary>
+    /// 盤面に存在しない（未配置）の駒IDリストを返す
+    /// </summary>
+    private List<PieceId> GetSelectablePieces(Piece[] state)
+    {
         PieceId[] allPieceIds = {
             PieceId.FSCB, PieceId.FSCW, PieceId.FSSB, PieceId.FSSW,
             PieceId.FTCB, PieceId.FTCW, PieceId.FTSB, PieceId.FTSW,
             PieceId.HSCB, PieceId.HSCW, PieceId.HSSB, PieceId.HSSW,
             PieceId.HTCB, PieceId.HTCW, PieceId.HTSB, PieceId.HTSW
         };
-        
-        // 現在のインデックスから順番に選択可能な駒を探す
-        for (int i = 0; i < allPieceIds.Length; i++)
+
+        List<PieceId> selectablePieces = new List<PieceId>();
+        foreach (PieceId pid in allPieceIds)
         {
-            int index = (currentPieceIndex + i) % allPieceIds.Length;
-            PieceId candidatePiece = allPieceIds[index];
-            
-            // この駒が選択可能かチェック（盤面に配置されていない駒）
-            bool isAvailable = true;
-            for (int j = 0; j < state.Length; j++)
+            if (IsPieceAvailable(state, pid))
             {
-                if (state[j] != null && state[j].getPieceId() == candidatePiece)
-                {
-                    isAvailable = false; // 既に配置済み
-                    break;
-                }
-            }
-            
-            if (isAvailable)
-            {
-                currentPieceIndex = (index + 1) % allPieceIds.Length; // 次回用にインデックスを更新
-                Debug.Log("CPUが駒を選択: " + candidatePiece);
-                return candidatePiece;
+                selectablePieces.Add(pid);
             }
         }
-        
-        // 選択可能な駒がない場合（通常は発生しない）
+        return selectablePieces;
+    }
+
+    /// <summary>
+    /// 指定した駒IDが盤面に未配置かどうか判定
+    /// </summary>
+    private bool IsPieceAvailable(Piece[] state, PieceId pid)
+    {
+        for (int j = 0; j < state.Length; j++)
+        {
+            if (state[j] != null && state[j].getPieceId() == pid)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// 1手でクリアされてしまう駒を除外した安全な駒リストを返す
+    /// </summary>
+    private List<PieceId> GetSafePieces(Piece[] state, List<PieceId> selectablePieces)
+    {
+        List<PieceId> safePieces = new List<PieceId>();
+        foreach (PieceId candidate in selectablePieces)
+        {
+            if (!CanWinInOneMove(state, candidate))
+            {
+                safePieces.Add(candidate);
+            }
+        }
+        return safePieces;
+    }
+
+    /// <summary>
+    /// 指定した駒を相手に渡したとき、どこに置いても1手で勝てるかどうか判定
+    /// </summary>
+    private bool CanWinInOneMove(Piece[] state, PieceId candidate)
+    {
+        Board tempBoard = CreateBoardFromState(state);
+        tempBoard.setSelectedPiece(candidate);
+
+        for (int i = 0; i < 16; i++)
+        {
+            if (state[i] == null)
+            {
+                Board testBoard = CreateBoardFromState(tempBoard.getState());
+                testBoard.setSelectedPiece(candidate);
+                testBoard.putPiece(candidate, new Position(i % 4, i / 4));
+                PlayerId winner = testBoard.judge();
+                if (winner != PlayerId.None)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// 盤面状態から新しいBoardインスタンスを作成
+    /// </summary>
+    private Board CreateBoardFromState(Piece[] state)
+    {
+        Board board = new Board();
+        for (int i = 0; i < state.Length; i++)
+        {
+            if (state[i] != null)
+            {
+                board.putPiece(state[i].getPieceId(), new Position(i % 4, i / 4));
+            }
+        }
+        return board;
+    }
+
+    /// <summary>
+    /// 候補リストからランダムに1つ選んで返す
+    /// </summary>
+    private PieceId SelectRandomPiece(List<PieceId> candidates, bool hasSafe)
+    {
+        if (candidates.Count > 0)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, candidates.Count);
+            PieceId selected = candidates[randomIndex];
+            Debug.Log("CPUが駒を選択: " + selected + (hasSafe ? "" : "（安全駒なし）"));
+            return selected;
+        }
         Debug.LogError("選択可能な駒がありません");
         return 0;
     }
