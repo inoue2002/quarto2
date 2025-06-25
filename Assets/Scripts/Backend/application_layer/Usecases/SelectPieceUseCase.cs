@@ -13,6 +13,11 @@ public class SelectPieceUseCase
         }
         board.changePlayer(board.getPlayerId());
         board.setSelectedPiece(pieceId);
+        
+        // 駒選択後にプレイヤー交代（正しいQuartoルール）
+        // 駒を選択したプレイヤーから、その駒を配置するプレイヤーに交代
+        board.changePlayer();
+        
         result.success = true;
         result.pieceId = pieceId;
 

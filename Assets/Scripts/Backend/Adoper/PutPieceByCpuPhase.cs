@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class PutPieceByCpuPhase : GamePhase
 {
 
@@ -11,6 +13,9 @@ public class PutPieceByCpuPhase : GamePhase
     {
         Board board = gameController.getBoard();
         PutPieceUseCase putPieceUseCase = new PutPieceUseCase();
+
+        Debug.Log("現在のプレイヤーは"+gameController.getBoard().getPlayerId());
+
         Player player = gameController.getPlayer();
         Position position = player.putPiece(board);
         PutPieceResult result = (PutPieceResult)putPieceUseCase.handle(board, board.getSelectedPieceId(), position);
@@ -34,22 +39,38 @@ public class PutPieceByCpuPhase : GamePhase
     }
     public override GamePhase getNextPhase(GameController gameController)
     {
+        Debug.Log("=== PutPieceByCpuPhase: 次フェーズ決定 ===");
+        
         if (!success)
         {
+            Debug.Log("CPU駒配置失敗 → PutPieceByCpuPhaseを継続");
             return new PutPieceByCpuPhase();
         }
         if (endFlag)
         {
+            Debug.Log("ゲーム終了 → GameEndPhaseへ");
             return new GameEndPhase();
         }
         else
         {
-            if (gameController.getPlayerType(ActionType.SelectPiece) == PlayerType.Cpu)
+            // PutPiece後はプレイヤーが交代済み
+            // 現在のプレイヤーがSelectPieceを行う
+            PlayerId currentPlayer = gameController.getBoard().getPlayerId();
+            Debug.Log($"CPU駒配置成功 - 現在のプレイヤー（交代後）: {currentPlayer}");
+            Debug.Log($"次にSelectPieceするプレイヤー: {currentPlayer}");
+            
+            // 現在のプレイヤーのSelectPieceタイプを確認
+            PlayerType selectPiecePlayerType = gameController.playerInfos[(int)currentPlayer].SelectPiece;
+            Debug.Log($"SelectPieceプレイヤーのタイプ: {selectPiecePlayerType}");
+            
+            if (selectPiecePlayerType == PlayerType.Cpu)
             {
+                Debug.Log("次はCPUのSelectPiece → SelectPieceByCpuPhaseへ");
                 return new SelectPieceByCpuPhase();
             }
             else
             {
+                Debug.Log("次は人間のSelectPiece → SelectPieceByUserPhaseへ");
                 return new SelectPieceByUserPhase();
             }
         }

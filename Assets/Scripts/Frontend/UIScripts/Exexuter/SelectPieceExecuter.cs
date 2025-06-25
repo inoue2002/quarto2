@@ -4,8 +4,7 @@ public class SelectPieceExecuter : Executer
 {
     public override void execute(GameController gameController, Result result)
     {
-        //カメラの向きを変える
-        // Camera.main.transform.position = new Vector3(0, 0, 0);
+
         //commandのpieceIdのピースのオブジェクトを取得する
         // Debug.Log("result: " + result.currentGamePhase);
         

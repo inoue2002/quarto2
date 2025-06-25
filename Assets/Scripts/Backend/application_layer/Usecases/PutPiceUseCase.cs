@@ -8,6 +8,11 @@ public class PutPieceUseCase{
             return result;
         }
         board.putPiece(pieceId, position);
+        
+        // 駒配置後のプレイヤー交代を削除（Quartoルール修正）
+        // Quartoでは駒を配置したプレイヤーが次の駒を選択する
+        // board.changePlayer(); ← これを削除
+        
         PlayerId winner = board.judge();
         result.success = true;
         result.winner = winner;

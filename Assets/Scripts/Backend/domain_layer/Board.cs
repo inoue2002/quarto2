@@ -29,6 +29,9 @@ public class Board
         lines.Add(new int[] { 0, 5, 10, 15 });
         lines.Add(new int[] { 3, 6, 9, 12 });
 
+        Debug.Log("=== Board初期化完了 ===");
+        Debug.Log($"初期プレイヤー: {currentPlayer}");
+        Debug.Log($"選択可能な駒数: {selectablePieces.Count}");
     }
 
     public void setSelectedPiece(PieceId pieceId)
@@ -45,9 +48,12 @@ public class Board
     }
 
 
-    public void changePlayer(PlayerId player)
+    public void changePlayer()
     {
-        if (player == PlayerId.Player1)
+        Debug.Log($"=== プレイヤー交代 ===");
+        Debug.Log($"現在のプレイヤー: {currentPlayer}");
+        
+        if (currentPlayer == PlayerId.Player1)
         {
             currentPlayer = PlayerId.Player2;
         }
@@ -55,6 +61,8 @@ public class Board
         {
             currentPlayer = PlayerId.Player1;
         }
+        
+        Debug.Log($"交代後のプレイヤー: {currentPlayer}");
     }
 
     public PlayerId judge()
@@ -82,7 +90,7 @@ public class Board
     }
     public bool canPutPiece(Position position)
     {
-        Debug.Log(position.Y + " " + position.X);
+        Debug.Log(position.X + " " + position.Y);
         // 0-basedの座標系に合わせて計算
         return state[(int)(position.Y * 4 + position.X)] == null;
     }

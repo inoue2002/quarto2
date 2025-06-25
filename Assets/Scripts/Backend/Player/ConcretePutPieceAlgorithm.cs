@@ -1,6 +1,6 @@
 
 
-public class ConcretePutPieceAlgorithm : PutPieceAlgorithm//�K���Ɏ���
+public class ConcretePutPieceAlgorithm : PutPieceAlgorithm
 {
     public override Position putPiece(Board board)
     {
@@ -9,8 +9,7 @@ public class ConcretePutPieceAlgorithm : PutPieceAlgorithm//�K���Ɏ��
         {
             if (board.getstate()[i] == null)
             {
-                return new Position(i % 4, i / 4);
-                
+                return new Position(i % 4, i / 4);              
             }
         }
         return new Position(-1, -1);

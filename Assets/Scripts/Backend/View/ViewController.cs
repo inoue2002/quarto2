@@ -15,7 +15,6 @@ public class ViewController : MonoBehaviour
         {GamePhaseType.PutPieceByUser, 3},
         {GamePhaseType.PutPieceByCpu, 4},
         {GamePhaseType.GameEnd, 5},
-        {GamePhaseType.CpuNext, 6},
     };
 
 
@@ -27,11 +26,16 @@ public class ViewController : MonoBehaviour
         
         getInfo();
     }
+
+    public void reinitialize()
+    {
+        gameController.initialize();
+        getInfo();
+    }
     public GameController gameController;
     public void execute(Command command)
     {
         Result result = gameController.execute(command);
-        Debug.Log("result:" + result);
         Debug.Log("result.currentGamePhase:" + result.currentGamePhase);
         //ここでバックエンドに情報を送って、バックエンドから情報を受け取る
         if(result is SelectPlayerResult){
@@ -41,7 +45,12 @@ public class ViewController : MonoBehaviour
             executers[1].execute(gameController, result);
         }
         else if(result is PutPieceResult){
-            executers[3].execute(gameController, result);
+            if(((PutPieceResult)result).winner == PlayerId.None){
+                executers[3].execute(gameController, result);
+            }
+            else{
+                executers[5].execute(gameController, result);
+            }
         }
         getInfo();
         

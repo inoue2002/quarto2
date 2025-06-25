@@ -167,10 +167,12 @@
     <Compile Include="Assets\Scripts\Backend\Adoper\SelectPlayerPhase.cs" />
     <Compile Include="Assets\Scripts\Backend\Adoper\GameController.cs" />
     <Compile Include="Assets\PieceScripts\FTSB.cs" />
+    <Compile Include="Assets\Scripts\Frontend\UIScripts\FreeViewButton.cs" />
     <Compile Include="Assets\Scripts\Backend\Adoper\SelectPieceByCpuPhase.cs" />
     <Compile Include="Assets\CellScripts\Cell2_1.cs" />
     <Compile Include="Assets\IPiece.cs" />
     <Compile Include="Assets\PieceScripts\FTCW.cs" />
+    <Compile Include="Assets\Scripts\Frontend\UIScripts\GameEndButton.cs" />
     <Compile Include="Assets\Scripts\Frontend\UIScripts\StartUIScripts\GameStartButton1.cs" />
   </ItemGroup>
   <ItemGroup>

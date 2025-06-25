@@ -42,26 +42,33 @@ public class SelectPieceByUserPhase : GamePhase
     }
     public override GamePhase getNextPhase(GameController gameController)
     {
-
+        Debug.Log("=== SelectPieceByUserPhase: 次フェーズ決定 ===");
         
         if (!success)
         {
-
+            Debug.Log("駒選択失敗 → SelectPieceByUserPhaseを継続");
             return new SelectPieceByUserPhase();
         }
         else
         {
-            PlayerType putPiecePlayerType = gameController.getPlayerType(ActionType.PutPiece);
-            Debug.Log("putPiecePlayerType: " + putPiecePlayerType); //ここがCPUになってない
+            // 駒選択後は現在のプレイヤー（交代済み）がPutPieceを行う
+            PlayerId currentPlayer = gameController.getBoard().getPlayerId();
+            
+            Debug.Log($"駒選択成功 - 現在のプレイヤー（交代後）: {currentPlayer}");
+            Debug.Log($"次にPutPieceするプレイヤー: {currentPlayer}");
+            
+            // 現在のプレイヤーのPutPieceタイプを確認
+            PlayerType putPiecePlayerType = gameController.playerInfos[(int)currentPlayer].PutPiece;
+            Debug.Log($"PutPieceプレイヤーのタイプ: {putPiecePlayerType}");
             
             if (putPiecePlayerType == PlayerType.Cpu)
             {
-
+                Debug.Log("次はCPUのPutPiece → PutPieceByCpuPhaseへ");
                 return new PutPieceByCpuPhase();
             }
             else
             {
-
+                Debug.Log("次は人間のPutPiece → PutPieceByUserPhaseへ");
                 return new PutPieceByUserPhase();
             }
         }

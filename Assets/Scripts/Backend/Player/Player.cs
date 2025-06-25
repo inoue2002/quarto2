@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class Player{
     private SelectPieceAlgorithm selectPieceAlgorithm;
     private PutPieceAlgorithm putPieceAlgorithm;
@@ -9,6 +11,7 @@ public class Player{
         return selectPieceAlgorithm.SelectPiece(board.getState());
     }
     public Position putPiece(Board board){
+        Debug.Log("putPieceaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"+putPieceAlgorithm.ToString());
         return putPieceAlgorithm.putPiece(board);
     }
 
