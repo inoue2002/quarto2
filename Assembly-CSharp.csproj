@@ -59,6 +59,7 @@
     <UnityVersion>6000.0.25f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Analyzer Include="C:\Users\kojiri\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.1.2\Analyzers\Microsoft.Unity.Analyzers.dll" />
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.0.25f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.SourceGenerators.dll" />
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.0.25f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.0.25f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
@@ -164,8 +165,8 @@
     <Compile Include="Assets\Scripts\Backend\Adoper\SelectPlayerPhase.cs" />
     <Compile Include="Assets\Scripts\Backend\Adoper\GameController.cs" />
     <Compile Include="Assets\PieceScripts\FTSB.cs" />
-    <Compile Include="Assets\Scripts\Backend\Adoper\SelectPieceByCpuPhase.cs" />
     <Compile Include="Assets\Scripts\Frontend\UIScripts\FreeViewButton.cs" />
+    <Compile Include="Assets\Scripts\Backend\Adoper\SelectPieceByCpuPhase.cs" />
     <Compile Include="Assets\CellScripts\Cell2_1.cs" />
     <Compile Include="Assets\IPiece.cs" />
     <Compile Include="Assets\PieceScripts\FTCW.cs" />
