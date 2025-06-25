@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="Assets\PieceScripts\FTSW.cs" />
     <Compile Include="Assets\Scripts\Backend\Player\PutPieceAlgorithm.cs" />
+    <Compile Include="Assets\Scripts\Backend\Information\PutPieceInformation.cs" />
     <Compile Include="Assets\Scripts\Backend\application_layer\Result\PutPieceResult.cs" />
     <Compile Include="Assets\CellScripts\Cell3_4.cs" />
     <Compile Include="Assets\CellScripts\Cell4_3.cs" />

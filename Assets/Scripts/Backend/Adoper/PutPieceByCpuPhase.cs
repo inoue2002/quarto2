@@ -77,6 +77,6 @@ public class PutPieceByCpuPhase : GamePhase
     }
     public override Information getInformation(GameController gameController)
     {
-        return new Information();
+        return new PutPieceInformation(gameController.getBoard().getPlayerId(), gameController.playerInfos[(int)gameController.getBoard().getPlayerId()].PutPiece);
     }
 }

@@ -1,22 +1,29 @@
 using UnityEngine;
+using TMPro;
 
 public class SelectPiecePresenter : Presenter
 {
-     public GameObject UICanvas;
+    public GameObject UICanvas;
+    public TMP_Text currentPlayerText;
     public override void handle(GameController gameController, Information information)
     {
-
-
         Board board = gameController.getBoard();
         Piece[] state = board.getState();
-        //CurrentPlayerがCPUのときのみ、UIを更新
-        // GameObject UICanvas = GameObject.Find("UICanvas").GetComponent<GameObject>();
-        // if(gameController.getBoard().getPlayerId() == PlayerId.CPU){
-        //     UICanvas.SetActive(true);
-        // }
-        // else{
-        //     UICanvas.SetActive(false);
-        // }
+
+        SelectPieceInformation selectPieceInformation = (SelectPieceInformation)information;
+        if(selectPieceInformation.currentPlayerId == PlayerId.Player1){
+            currentPlayerText.text = "Player1";
+        }else{
+            currentPlayerText.text = "Player2";
+        }
+        if(selectPieceInformation.currentPlayerType == PlayerType.Cpu){
+            currentPlayerText.text += " (CPU)";
+        }
+        else{
+            currentPlayerText.text += " (Human)";
+        }
+       
+        
         return;
     }
 }

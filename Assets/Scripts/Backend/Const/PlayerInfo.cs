@@ -2,6 +2,7 @@ public struct PlayerInfo
 {
     public PlayerType SelectPiece;
     public PlayerType PutPiece;
+    
 
     public PlayerInfo(PlayerType select,PlayerType put)
     {

@@ -59,6 +59,6 @@ public class SelectPieceByCpuPhase : GamePhase
     }
     public override Information getInformation(GameController gameController)
     {
-        return new SelectPieceInformation(gameController.getBoard().getSelectablePieces());
+        return new SelectPieceInformation(gameController.getBoard().getSelectablePieces(), gameController.getBoard().getPlayerId(), gameController.playerInfos[(int)gameController.getBoard().getPlayerId()].SelectPiece);
     }
 }

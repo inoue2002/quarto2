@@ -75,6 +75,6 @@ public class SelectPieceByUserPhase : GamePhase
     }
     public override Information getInformation(GameController gameController)//選択できる駒を返してあげる
     {
-        return new SelectPieceInformation(gameController.getBoard().getSelectablePieces());
+        return new SelectPieceInformation(gameController.getBoard().getSelectablePieces(), gameController.getBoard().getPlayerId(), gameController.playerInfos[(int)gameController.getBoard().getPlayerId()].SelectPiece);
     }
 }
