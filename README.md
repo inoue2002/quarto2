@@ -12,6 +12,8 @@ Quartoは2人用の戦略ボードゲームです。16個のピースを4×4の�
 
 ゲーム内での操作は以下の通りです。
 
+[![Image from Gyazo](https://i.gyazo.com/90da4125899236999c22bebcc5d18150.gif)](https://gyazo.com/90da4125899236999c22bebcc5d18150)
+
 #### キーボード操作
 - **W/A/S/D** - カーソル移動
 - **Q/E** - ピース選択
