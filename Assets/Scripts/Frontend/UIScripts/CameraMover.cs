@@ -21,6 +21,24 @@ public class CameraMover : MonoBehaviour//MainCameraにアタッチ
     [SerializeField, Range(30.0f, 150.0f)]
     private float _mouseSensitive = 90.0f;
 
+    //十字キー回転速度
+    [SerializeField, Range(30.0f, 120.0f)]
+    private float _rotationSpeed = 60.0f;
+
+    //十字キー距離調整速度
+    [SerializeField, Range(5.0f, 20.0f)]
+    private float _distanceSpeed = 10.0f;
+
+    //ボードの中心座標
+    [SerializeField]
+    private Vector3 _boardCenter = Vector3.zero;
+
+    //カメラ距離の最小・最大値
+    [SerializeField, Range(5.0f, 15.0f)]
+    private float _minDistance = 8.0f;
+    [SerializeField, Range(15.0f, 30.0f)]
+    private float _maxDistance = 25.0f;
+
     //カメラ操作の有効無効
 	private bool _cameraMoveActive = true;
     //カメラのtransform  
@@ -53,6 +71,7 @@ public class CameraMover : MonoBehaviour//MainCameraにアタッチ
             CameraRotationMouseControl(); //カメラの回転 マウス
             CameraSlideMouseControl(); //カメラの縦横移動 マウス
             CameraPositionKeyControl(); //カメラのローカル移動 キー
+            CameraOrbitControl(); //カメラの軌道制御 十字キー
         }
 	}
 	
@@ -129,27 +148,54 @@ public class CameraMover : MonoBehaviour//MainCameraにアタッチ
 		}
 	}
 		
-	//カメラのローカル移動 キー
+	//カメラのローカル移動 キー（現在は無効化）
 	private void CameraPositionKeyControl()
 	{
-        Vector3 campos = _camTransform.position;
-		
-		// WASD キー
-		if (Input.GetKey(KeyCode.D)) { campos += _camTransform.right * Time.deltaTime * _positionStep; }
-		if (Input.GetKey(KeyCode.A)) { campos -= _camTransform.right * Time.deltaTime * _positionStep; }
-		if (Input.GetKey(KeyCode.E)) { campos += _camTransform.up * Time.deltaTime * _positionStep; }
-		if (Input.GetKey(KeyCode.Q)) { campos -= _camTransform.up * Time.deltaTime * _positionStep; }
-		if (Input.GetKey(KeyCode.W)) { campos += _camTransform.forward * Time.deltaTime * _positionStep; }
-		if (Input.GetKey(KeyCode.S)) { campos -= _camTransform.forward * Time.deltaTime * _positionStep; }
-
-		// 十字キー（矢印キー）- WASDと同じ動作
-		if (Input.GetKey(KeyCode.RightArrow)) { campos += _camTransform.right * Time.deltaTime * _positionStep; }
-		if (Input.GetKey(KeyCode.LeftArrow)) { campos -= _camTransform.right * Time.deltaTime * _positionStep; }
-		if (Input.GetKey(KeyCode.UpArrow)) { campos += _camTransform.forward * Time.deltaTime * _positionStep; }
-		if (Input.GetKey(KeyCode.DownArrow)) { campos -= _camTransform.forward * Time.deltaTime * _positionStep; }
-
-		_camTransform.position = campos;
+		// WASDキーとQEキーは軌道制御に統合されたため、この関数は無効化
 	}
+
+    //カメラの軌道制御 十字キー・WASD・QE
+    private void CameraOrbitControl()
+    {
+        float horizontalInput = 0f;
+        float verticalInput = 0f;
+
+        // 左右入力でY軸回転（水平方向の軌道回転）
+        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) horizontalInput = -1f;
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) horizontalInput = 1f;
+
+        // 前後・上下入力で距離調整
+        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W)) verticalInput = -1f; // 近づく
+        if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S)) verticalInput = 1f; // 遠ざかる
+        if (Input.GetKey(KeyCode.Q)) verticalInput = -1f; // 近づく（上昇）
+        if (Input.GetKey(KeyCode.E)) verticalInput = 1f; // 遠ざかる（降下）
+
+        // 水平回転の処理
+        if (horizontalInput != 0f)
+        {
+            // ボード中心を起点にカメラを水平回転
+            Vector3 direction = _camTransform.position - _boardCenter;
+            Quaternion rotation = Quaternion.AngleAxis(horizontalInput * _rotationSpeed * Time.deltaTime, Vector3.up);
+            Vector3 newDirection = rotation * direction;
+            _camTransform.position = _boardCenter + newDirection;
+            
+            // カメラをボード中心に向ける
+            _camTransform.LookAt(_boardCenter);
+        }
+
+        // 距離調整の処理
+        if (verticalInput != 0f)
+        {
+            Vector3 direction = (_camTransform.position - _boardCenter).normalized;
+            float currentDistance = Vector3.Distance(_camTransform.position, _boardCenter);
+            float newDistance = currentDistance + verticalInput * _distanceSpeed * Time.deltaTime;
+            
+            // 距離を制限
+            newDistance = Mathf.Clamp(newDistance, _minDistance, _maxDistance);
+            
+            _camTransform.position = _boardCenter + direction * newDistance;
+        }
+    }
 
     //UIメッセージの表示
     private IEnumerator DisplayUiMessage()
