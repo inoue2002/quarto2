@@ -17,7 +17,14 @@ public class SelectPiecePresenter : Presenter
             currentPlayerText.text = "Player2";
         }
         if(selectPieceInformation.currentPlayerType == PlayerType.Cpu){
-            currentPlayerText.text += " (CPU)";
+            if (!string.IsNullOrEmpty(selectPieceInformation.algorithmName))
+            {
+                currentPlayerText.text += " (CPU - " + selectPieceInformation.algorithmName + ")";
+            }
+            else
+            {
+                currentPlayerText.text += " (CPU)";
+            }
         }
         else{
             currentPlayerText.text += " (Human)";

@@ -75,6 +75,15 @@ public class SelectPieceByUserPhase : GamePhase
     }
     public override Information getInformation(GameController gameController)//選択できる駒を返してあげる
     {
-        return new SelectPieceInformation(gameController.getBoard().getSelectablePieces(), gameController.getBoard().getPlayerId(), gameController.playerInfos[(int)gameController.getBoard().getPlayerId()].SelectPiece);
+        PlayerId currentPlayerId = gameController.getBoard().getPlayerId();
+        PlayerType currentPlayerType = gameController.playerInfos[(int)currentPlayerId].SelectPiece;
+        string algorithmName = "";
+        
+        if (currentPlayerType == PlayerType.Cpu)
+        {
+            algorithmName = gameController.getPlayer().SelectPieceAlgorithmName;
+        }
+        
+        return new SelectPieceInformation(gameController.getBoard().getSelectablePieces(), currentPlayerId, currentPlayerType, algorithmName);
     }
 }

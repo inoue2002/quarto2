@@ -77,6 +77,15 @@ public class PutPieceByCpuPhase : GamePhase
     }
     public override Information getInformation(GameController gameController)
     {
-        return new PutPieceInformation(gameController.getBoard().getPlayerId(), gameController.playerInfos[(int)gameController.getBoard().getPlayerId()].PutPiece);
+        PlayerId currentPlayerId = gameController.getBoard().getPlayerId();
+        PlayerType currentPlayerType = gameController.playerInfos[(int)currentPlayerId].PutPiece;
+        string algorithmName = "";
+        
+        if (currentPlayerType == PlayerType.Cpu)
+        {
+            algorithmName = gameController.getPlayer().PutPieceAlgorithmName;
+        }
+        
+        return new PutPieceInformation(currentPlayerId, currentPlayerType, algorithmName);
     }
 }

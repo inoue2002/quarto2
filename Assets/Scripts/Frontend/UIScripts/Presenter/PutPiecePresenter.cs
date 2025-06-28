@@ -14,7 +14,14 @@ public class PutPiecePresenter : Presenter
             currentPlayerText.text = "Player2";
         }
         if(putPieceInformation.currentPlayerType == PlayerType.Cpu){
-            currentPlayerText.text += " (CPU)";
+            if (!string.IsNullOrEmpty(putPieceInformation.algorithmName))
+            {
+                currentPlayerText.text += " (CPU - " + putPieceInformation.algorithmName + ")";
+            }
+            else
+            {
+                currentPlayerText.text += " (CPU)";
+            }
         }
         else{
             currentPlayerText.text += " (Human)";

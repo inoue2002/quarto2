@@ -80,7 +80,7 @@ public class SelectPlayerPhase : GamePhase
             Debug.Log("PutPieceは人間プレイヤー");
         }
         
-        Player player = new Player(selectPieceAlgorithm, putPieceAlgorithm);
+        Player player = new Player(selectPieceAlgorithm, putPieceAlgorithm, selectPieceAlgorithmName, putPieceAlgorithmName);
         gameController.setPlayer(player);
         Debug.Log("プレイヤーオブジェクト作成完了");
 
