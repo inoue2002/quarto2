@@ -19,8 +19,8 @@ public class SelectPlayerPhase : GamePhase
         putPieceAlgorithms.Add("DEFO",new ConcretePutPieceAlgorithm());
 
         // 追加する
-        selectPieceAlgorithms.Add("Youkan",new YoukanSelectPieceAlgorithm());
-        putPieceAlgorithms.Add("Youkan",new YoukanPutPieceAlgorithm());
+        selectPieceAlgorithms.Add("Youkan2",new Youkan2SelectPieceAlgorithm());
+        putPieceAlgorithms.Add("Youkan2",new Youkan2PutPieceAlgorithm());
     }
     public override Result execute(Command command, GameController gameController)
     {
