@@ -39,22 +39,9 @@ public class Youkan2SelectPieceAlgorithm : SelectPieceAlgorithm
         // 現在のボードの状況から渡すことが可能な配列（死ぬ可能性あり）
         public List<PieceId> getAvailablePieces()
         {
-            // 全てのコマIDを取得
-            List<PieceId> allPieceIds = Enum.GetValues(typeof(PieceId)) as PieceId[] != null
-                ? new List<PieceId>((PieceId[])Enum.GetValues(typeof(PieceId)))
-                : new List<PieceId>();
-            // すでに配置されているコマIDを取得
-            List<PieceId> placedPieceIds = getAllPieces();
-            // 配置されていないコマIDのみ返す
-            List<PieceId> availablePieces = new List<PieceId>();
-            foreach (PieceId pieceId in allPieceIds)
-            {
-                if (!placedPieceIds.Contains(pieceId))
-                {
-                    availablePieces.Add(pieceId);
-                }
-            }
-            return availablePieces;
+            var allPieceIds = ((PieceId[])Enum.GetValues(typeof(PieceId)));
+            var placedPieceIds = getAllPieces();
+            return allPieceIds.Where(pid => !placedPieceIds.Contains(pid)).ToList();
         }
 
         // piece配列から安全なコマの配列を返す関数
@@ -71,7 +58,6 @@ public class Youkan2SelectPieceAlgorithm : SelectPieceAlgorithm
             // 1つもない場合はランダムに1つ
             if (safePieces.Count == 0 && pieceIds.Length > 0)
             {
-                // 修正: List<PieceId> から PieceId[] への変換
                 int randIndex = UnityEngine.Random.Range(0, pieceIds.Length);
                 return new List<PieceId>() { pieceIds[randIndex] };
             }
@@ -81,9 +67,40 @@ public class Youkan2SelectPieceAlgorithm : SelectPieceAlgorithm
         // PieceIdから渡した瞬間ゲームが終わるものを省いて即死しないPieceを返す関数
         public bool isSafePiece(PieceId pieceId)
         {
-            // 今のボードをコピーして、駒を1つ進める
-            // その状態で相手が勝つかどうかを判定
-            // 仮実装: 常にtrue
+            // 現在の盤面の空きマスを取得
+            List<int> emptyPositions = new List<int>();
+            for (int i = 0; i < board.Length; i++)
+            {
+                if (board[i] == null)
+                {
+                    emptyPositions.Add(i);
+                }
+            }
+
+            // すべての空きマスにpieceIdを仮置きして、即座にquartoが成立するか判定
+            foreach (int pos in emptyPositions)
+            {
+                // Boardクラスのインスタンスを作成し、現在の盤面を再現
+                Board tempBoard = new Board();
+                for (int j = 0; j < 16; j++)
+                {
+                    if (board[j] != null)
+                    {
+                        tempBoard.putPiece(board[j].getPieceId(), new Position(j % 4, j / 4));
+                    }
+                }
+                // 仮のピースを置く
+                tempBoard.putPiece(pieceId, new Position(pos % 4, pos / 4));
+
+                // // Boardクラスの勝利判定を使う
+                // if (tempBoard.isQuarto())
+                // {
+                //     // このpieceIdを渡すと即死する
+                //     return false;
+                // }
+            }
+
+            // どこに置いても即死しない
             return true;
         }
 

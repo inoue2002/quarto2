@@ -48,7 +48,13 @@ The project follows clean architecture principles with strict separation between
 
 ### Game Logic Specifics
 
-**Piece Encoding**: PieceId values encode 4 binary attributes in lower 4 bits (H/F, T/S, C/S, B/W)
+**Piece Encoding**: PieceId values encode 4 binary attributes in lower 4 bits:
+- **H/F**: Hole (穴) / Flat (平) - 表面
+- **T/S**: Tall (高い) / Short (低い) - 高さ  
+- **C/S**: Circle (丸) / Square (四角) - 形
+- **B/W**: Black (黒) / White (白) - 色
+
+Example: FSCB = Flat + Short + Circle + Black (平面・低い・丸・黒)
 
 **Win Detection**: `isQuarto()` method uses efficient bitwise operations for victory conditions
 
