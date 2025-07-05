@@ -21,6 +21,7 @@ public class SelectPlayerPhase : GamePhase
         // 追加する
         selectPieceAlgorithms.Add("Youkan2",new Youkan2SelectPieceAlgorithm());
         putPieceAlgorithms.Add("Youkan2",new Youkan2PutPieceAlgorithm());
+        putPieceAlgorithms.Add("Taiga",new TaigaPutPieceAlgorithm());
     }
     public override Result execute(Command command, GameController gameController)
     {
