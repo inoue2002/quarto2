@@ -92,12 +92,10 @@ public class Youkan2SelectPieceAlgorithm : SelectPieceAlgorithm
                 // 仮のピースを置く
                 tempBoard.putPiece(pieceId, new Position(pos % 4, pos / 4));
 
-                // // Boardクラスの勝利判定を使う
-                // if (tempBoard.isQuarto())
-                // {
-                //     // このpieceIdを渡すと即死する
-                //     return false;
-                // }
+                // 置いた結果、ゲームが終わるかどうかを判定する
+                if(tempBoard.judge() != PlayerId.None){
+                    return false;
+                }
             }
 
             // どこに置いても即死しない
