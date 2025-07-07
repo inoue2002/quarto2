@@ -38,9 +38,10 @@ public class TaigaPutPieceAlgorithm : PutPieceAlgorithm
         int lastPosition;
         if (safePosition.Count > 0)
         {
-            // 安全な手の中から、次に渡す駒がなくならない位置をランダムに選ぶ
+            // 安全な手の中からランダムに選ぶ
             Debug.Log($"Taiga: 安全な手が{safePosition.Count}個あります");
-            lastPosition = ChooseBestSafePosition(safePosition, board.getState(), nextPutPeaceId);
+            int randomIndex = new System.Random().Next(safePosition.Count);
+            lastPosition = safePosition[randomIndex];
         }
         else
         {
@@ -55,39 +56,6 @@ public class TaigaPutPieceAlgorithm : PutPieceAlgorithm
         return finalPosition;
     }
 
-    /// <summary>
-    /// 安全な配置の中から、次に渡す駒がなくならない位置をランダムに選ぶ
-    /// </summary>
-    private int ChooseBestSafePosition(List<int> safePositions, Piece[] currentState, PieceId pieceToPlace)
-    {
-        List<int> positionsWithPiecesToGive = new List<int>();
-        
-        // 渡す駒がある位置をリストアップ
-        foreach (int position in safePositions)
-        {
-            // この位置に駒を置いた後の盤面を作成
-            Piece[] futureState = PlacePieceOnBoard(currentState, pieceToPlace, position);
-            
-            // 次に渡せる駒があるかチェック（Youkan2Selectのライブラリを使用）
-            if (Youkan2SelectPieceAlgorithm.QuartoAILib.CanGivePieceAfterMove(futureState))
-            {
-                positionsWithPiecesToGive.Add(position);
-            }
-        }
-        
-        // 渡す駒がある位置からランダムに選択
-        if (positionsWithPiecesToGive.Count > 0)
-        {
-            Debug.Log($"Taiga: 渡す駒がある位置が{positionsWithPiecesToGive.Count}個見つかりました");
-            int randomIndex = new System.Random().Next(positionsWithPiecesToGive.Count);
-            return positionsWithPiecesToGive[randomIndex];
-        }
-        
-        // 全ての位置で渡す駒がなくなる場合は安全な位置からランダムに選ぶ
-        Debug.Log("Taiga: 全ての位置で駒がなくなる...安全な位置からランダム選択");
-        int fallbackIndex = new System.Random().Next(safePositions.Count);
-        return safePositions[fallbackIndex];
-    }
 
     /// <summary>
     /// その盤面が、次にどの駒を渡しても相手が勝ってしまう「積み状態」かどうかを判定する
@@ -161,6 +129,8 @@ public class TaigaPutPieceAlgorithm : PutPieceAlgorithm
 
         return allPieces;
     }
+
+
     //以下のコードは置いたら必勝する場合以外はランダムに置くという意味のコードである
     /* 置ける場所のリストからランダムに1つのインデックスを取得
     int randomIndex = new System.Random().Next(puttablePosition.Count);
