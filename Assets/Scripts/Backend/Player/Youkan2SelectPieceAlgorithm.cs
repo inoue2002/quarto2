@@ -18,7 +18,7 @@ public class Youkan2SelectPieceAlgorithm : SelectPieceAlgorithm
         }
 
         PieceId result = new SelectPieceLib(board).getSelectBestPiece();
-        Debug.Log("Youkan2:選択完了"+result.ToString());
+        Debug.Log("Youkan2:選択完了 " + QuartoAILib.PieceIdToReadableString(result));
 
         // なぜか渡せない
         return result;
@@ -100,7 +100,7 @@ public class Youkan2SelectPieceAlgorithm : SelectPieceAlgorithm
                 PieceId? checkmateMove = FindCheckmateMove(selectablePieces, puttablePositions);
                 if (checkmateMove.HasValue)
                 {
-                    Debug.Log($"Youkan2:相手を詰みに追い込む駒を選択: {checkmateMove.Value}");
+                    Debug.Log($"Youkan2:相手を詰みに追い込む駒を選択: {QuartoAILib.PieceIdToReadableString(checkmateMove.Value)}");
                     return checkmateMove.Value;
                 }
                 
@@ -108,11 +108,13 @@ public class Youkan2SelectPieceAlgorithm : SelectPieceAlgorithm
                 return selectablePieces[UnityEngine.Random.Range(0, selectablePieces.Count)];
             }
 
-            // 空きマス8個以下で深い読みを開始
-            if (emptySpaces <= 8)
+            // 残りマス数に応じて読みの深さを動的に調整
+            int searchDepth = CalculateOptimalSearchDepth(emptySpaces);
+            Debug.Log($"Youkan2: 空きマス{emptySpaces}個 → {searchDepth}手先読みモード");
+            
+            if (searchDepth > 2)
             {
-                Debug.Log("Youkan2:詳細読みモード");
-                return SelectBestPieceWithDeepAnalysis(safePieces, puttablePositions);
+                return SelectBestPieceWithAdvancedSearch(safePieces, puttablePositions, searchDepth);
             }
             else
             {
@@ -148,30 +150,135 @@ public class Youkan2SelectPieceAlgorithm : SelectPieceAlgorithm
             return scores.OrderBy(x => x.Value).First().Key;
         }
 
-        private PieceId SelectBestPieceWithDeepAnalysis(List<PieceId> safePieces, List<Position> puttablePositions)
+        /// <summary>
+        /// 残りマス数に応じて最適な探索深度を計算する
+        /// </summary>
+        private int CalculateOptimalSearchDepth(int emptySpaces)
         {
+            if (emptySpaces <= 4)
+            {
+                return 8; // 終盤は8手先まで（ほぼ完全読み）
+            }
+            else if (emptySpaces <= 6)
+            {
+                return 6; // 中終盤は6手先
+            }
+            else if (emptySpaces <= 8)
+            {
+                return 4; // 中盤は4手先
+            }
+            else if (emptySpaces <= 10)
+            {
+                return 3; // 序中盤は3手先
+            }
+            else
+            {
+                return 2; // 序盤は基本戦略（2手先相当）
+            }
+        }
+
+        /// <summary>
+        /// 指定した深度で高度な探索を行う（旧DeepAnalysisの拡張版）
+        /// </summary>
+        private PieceId SelectBestPieceWithAdvancedSearch(List<PieceId> safePieces, List<Position> puttablePositions, int searchDepth)
+        {
+            Debug.Log($"Youkan2: {searchDepth}手先読み開始（候補駒{safePieces.Count}個）");
+            
             Dictionary<PieceId, float> scores = new Dictionary<PieceId, float>();
             
             foreach (PieceId pieceId in safePieces)
             {
-                float score = 0f;
-                
-                // 相手の安全な置き場所を制限する
-                int opponentSafePositions = CountOpponentSafePositions(pieceId, puttablePositions);
-                score += opponentSafePositions * 10f;
-                
-                // リーチ破壊の効果
-                int reachBreaks = CountReachBreakingMoves(pieceId, puttablePositions);
-                score -= reachBreaks * 5f;
-                
-                // 2手先の危険度
-                float nextTurnRisk = CalculateNextTurnRisk(pieceId, puttablePositions);
-                score += nextTurnRisk;
-                
+                // 指定深度で評価
+                float score = EvaluatePieceWithLookahead(pieceId, puttablePositions, depth: searchDepth);
                 scores[pieceId] = score;
+                
+                Debug.Log($"Youkan2: {QuartoAILib.PieceIdToReadableString(pieceId)} スコア={score:F2}");
             }
             
-            return scores.OrderBy(x => x.Value).First().Key;
+            PieceId bestPiece = scores.OrderBy(x => x.Value).First().Key;
+            Debug.Log($"Youkan2: {searchDepth}手先読み結果 → {QuartoAILib.PieceIdToReadableString(bestPiece)}");
+            
+            return bestPiece;
+        }
+
+
+        /// <summary>
+        /// 指定した深度まで先読みして駒を評価する（拡張可能な設計）
+        /// </summary>
+        /// <param name="pieceToGive">評価する駒</param>
+        /// <param name="availablePositions">利用可能な位置</param>
+        /// <param name="depth">読みの深さ（8=8手先まで）</param>
+        /// <returns>評価スコア（低いほど相手に不利）</returns>
+        private float EvaluatePieceWithLookahead(PieceId pieceToGive, List<Position> availablePositions, int depth)
+        {
+            if (depth <= 0 || availablePositions.Count == 0)
+            {
+                return 0f; // 終端条件
+            }
+            
+            float totalScore = 0f;
+            int scenarioCount = 0;
+            
+            // 深い読みの場合は計算量制限を追加
+            int maxPositionsToCheck = (depth >= 6) ? Math.Min(availablePositions.Count, 8) : availablePositions.Count;
+            
+            // 1手目：相手がこの駒を各位置に置く場合を検討
+            for (int i = 0; i < maxPositionsToCheck; i++)
+            {
+                Position opponentMove = availablePositions[i];
+                Board boardAfterOpponentMove = quartoAILib.getNextBoard(pieceToGive, opponentMove);
+                
+                // 相手がこの手で勝った場合は最悪スコア
+                if (boardAfterOpponentMove.judge() != PlayerId.None)
+                {
+                    totalScore += 1000f; // 相手勝利 = 最悪
+                    scenarioCount++;
+                    continue;
+                }
+                
+                // 2手目以降：自分が駒を選ぶ場合を評価
+                float scenarioScore = EvaluateMyNextPieceSelection(boardAfterOpponentMove, depth - 1);
+                totalScore += scenarioScore;
+                scenarioCount++;
+            }
+            
+            return scenarioCount > 0 ? totalScore / scenarioCount : 0f;
+        }
+
+        /// <summary>
+        /// 自分の駒選択フェーズの評価（再帰的に呼び出し可能）
+        /// </summary>
+        private float EvaluateMyNextPieceSelection(Board currentBoard, int remainingDepth)
+        {
+            if (remainingDepth <= 0)
+            {
+                return 0f;
+            }
+            
+            List<PieceId> availablePieces = new QuartoAILib(currentBoard).GetSelectablePieces();
+            List<Position> availablePositions = new QuartoAILib(currentBoard).GetPuttablePositions();
+            
+            if (availablePieces.Count == 0 || availablePositions.Count == 0)
+            {
+                return 0f; // ゲーム終了
+            }
+            
+            float bestWorstCaseScore = float.MaxValue;
+            
+            // 自分が各駒を選んだ場合の最悪ケースを評価
+            foreach (PieceId myPieceChoice in availablePieces)
+            {
+                // この駒を選んだ場合の相手の最良応手を評価
+                float worstCaseForThisPiece = EvaluatePieceWithLookahead(myPieceChoice, availablePositions, remainingDepth - 1);
+                
+                // 自分にとっては相手の最良応手の中で最も害の少ないものを選ぶ
+                if (worstCaseForThisPiece < bestWorstCaseScore)
+                {
+                    bestWorstCaseScore = worstCaseForThisPiece;
+                }
+            }
+            
+            return bestWorstCaseScore == float.MaxValue ? 0f : bestWorstCaseScore;
         }
 
         private int CountOpponentSafePositions(PieceId pieceId, List<Position> positions)
@@ -390,7 +497,7 @@ public class Youkan2SelectPieceAlgorithm : SelectPieceAlgorithm
                 // 相手がどこに置いても次で必勝できる駒を発見
                 if (isWinningPiece)
                 {
-                    Debug.Log($"Youkan2: 詰み手発見: {piece}");
+                    Debug.Log($"Youkan2: 詰み手発見: {QuartoAILib.PieceIdToReadableString(piece)}");
                     return piece;
                 }
             }
@@ -517,6 +624,150 @@ public class Youkan2SelectPieceAlgorithm : SelectPieceAlgorithm
             
             // 差分
             return allPieces.Except(alreadyPiceId).ToList();
+        }
+
+        /// <summary>
+        /// 指定した盤面状態で、次に相手に渡せる駒があるかチェック（Put用）
+        /// </summary>
+        /// <param name="state">盤面状態</param>
+        /// <returns>渡せる駒があるかどうか</returns>
+        public static bool CanGivePieceAfterMove(Piece[] state)
+        {
+            return HasPiecesToGiveAfterMove(state);
+        }
+
+        /// <summary>
+        /// 指定した盤面状態で、次に相手に渡せる駒があるかチェック
+        /// 矛盾するリーチを作った場合は、相手に渡す駒は確実にダメ
+        /// 例えば 白リーチ、黒リーチを作るような箇所に置いたら、渡す駒が確実にない
+        /// </summary>
+        /// <param name="state">盤面状態</param>
+        /// <returns>渡せる駒があるかどうか</returns>
+        private static bool HasPiecesToGiveAfterMove(Piece[] state)
+        {
+            // まず物理的に駒が残っているかチェック
+            int usedPieces = 0;
+            foreach (Piece piece in state)
+            {
+                if (piece != null)
+                {
+                    usedPieces++;
+                }
+            }
+            
+            // 16個すべて使い切った場合は渡す駒がない
+            if (usedPieces >= 16) return false;
+            
+            // 残りの駒を取得
+            List<PieceId> remainingPieces = new List<PieceId>();
+            for (int i = 0; i < 16; i++)
+            {
+                remainingPieces.Add((PieceId)i);
+            }
+            
+            // 盤面にある駒を除外
+            foreach (Piece piece in state)
+            {
+                if (piece != null)
+                {
+                    remainingPieces.Remove(piece.getPieceId());
+                }
+            }
+            
+            // 空いている位置を取得
+            List<int> emptyPositions = new List<int>();
+            for (int i = 0; i < state.Length; i++)
+            {
+                if (state[i] == null)
+                {
+                    emptyPositions.Add(i);
+                }
+            }
+            
+            // 残りの駒の中で、相手がどこに置いても勝てない駒があるかチェック
+            foreach (PieceId pieceId in remainingPieces)
+            {
+                bool canAvoidWin = false;
+                
+                // この駒を相手が各位置に置いた場合をチェック
+                foreach (int position in emptyPositions)
+                {
+                    Piece[] testState = new Piece[16];
+                    Array.Copy(state, testState, 16);
+                    testState[position] = new Piece(pieceId);
+                    
+                    // この配置で相手が勝てないなら、この駒は安全に渡せる
+                    if (TaigaPutPieceAlgorithm.JudgeWinner(testState) == PlayerId.None)
+                    {
+                        canAvoidWin = true;
+                        break;
+                    }
+                }
+                
+                // この駒なら安全に渡せる
+                if (canAvoidWin)
+                {
+                    return true;
+                }
+            }
+            
+            // どの駒を渡しても相手が勝ってしまう = 矛盾するリーチを作ってしまった
+            return false;
+        }
+
+        /// <summary>
+        /// PieceIdを人間が読みやすい形に変換する
+        /// </summary>
+        /// <param name="pieceId">変換するPieceId</param>
+        /// <returns>読みやすい形式の文字列</returns>
+        public static string PieceIdToReadableString(PieceId pieceId)
+        {
+            string pieceString = pieceId.ToString();
+            
+            // 各位置の文字を分析 (例: FSCW = F-S-C-W)
+            if (pieceString.Length != 4)
+            {
+                return pieceId.ToString(); // 想定外の形式の場合はそのまま返す
+            }
+            
+            string surface = "";   // 1文字目: 表面 (H/F)
+            string height = "";    // 2文字目: 高さ (T/S)
+            string shape = "";     // 3文字目: 形 (C/S)
+            string color = "";     // 4文字目: 色 (B/W)
+            
+            // 表面 (1文字目)
+            switch (pieceString[0])
+            {
+                case 'H': surface = "ホール(穴)"; break;
+                case 'F': surface = "フラット(平面)"; break;
+                default: surface = pieceString[0].ToString(); break;
+            }
+            
+            // 高さ (2文字目)
+            switch (pieceString[1])
+            {
+                case 'T': height = "高い"; break;
+                case 'S': height = "低い"; break;
+                default: height = pieceString[1].ToString(); break;
+            }
+            
+            // 形 (3文字目)
+            switch (pieceString[2])
+            {
+                case 'C': shape = "円形"; break;
+                case 'S': shape = "四角"; break;
+                default: shape = pieceString[2].ToString(); break;
+            }
+            
+            // 色 (4文字目)
+            switch (pieceString[3])
+            {
+                case 'B': color = "黒色"; break;
+                case 'W': color = "白色"; break;
+                default: color = pieceString[3].ToString(); break;
+            }
+            
+            return $"{pieceId}({surface}で、{height}くて、{shape}で、{color})";
         }
     }
 }

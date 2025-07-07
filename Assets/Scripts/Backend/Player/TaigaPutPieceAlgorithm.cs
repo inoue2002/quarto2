@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TaigaPutPieceAlgorithm : PutPieceAlgorithm
@@ -7,7 +8,7 @@ public class TaigaPutPieceAlgorithm : PutPieceAlgorithm
     public override Position putPiece(Board board)
     {
         PieceId nextPutPeaceId = board.getSelectedPieceId();
-        Debug.Log("たいが来るよ");
+        Debug.Log("Taiga: たいが来るよ");
         //1.自分の勝てる手を探してあれば置く
         List<int> puttablePosition = getPuttablePositions(board);
         foreach (int position in puttablePosition)
@@ -15,7 +16,9 @@ public class TaigaPutPieceAlgorithm : PutPieceAlgorithm
             Piece[] tempPiece = PlacePieceOnBoard(board.getstate(), nextPutPeaceId, position);
             if (JudgeWinner(tempPiece) != PlayerId.None)
             {
-                return new Position(position % 4, position / 4);
+                Position winPosition = new Position(position % 4, position / 4);
+                Debug.Log($"Taiga: 勝利手を発見！{Youkan2SelectPieceAlgorithm.QuartoAILib.PieceIdToReadableString(nextPutPeaceId)}を位置({winPosition.X},{winPosition.Y})に配置");
+                return winPosition;
             }
         }
         // 2.次にどの駒を選んでも積みにならないような「安全な手」を置く
@@ -35,18 +38,55 @@ public class TaigaPutPieceAlgorithm : PutPieceAlgorithm
         int lastPosition;
         if (safePosition.Count > 0)
         {
-            // 安全な手があれば、その中からランダムに選ぶ
-            int randomIndex = new System.Random().Next(safePosition.Count);
-            lastPosition = safePosition[randomIndex];
+            // 安全な手の中から、次に渡す駒がなくならない位置をランダムに選ぶ
+            Debug.Log($"Taiga: 安全な手が{safePosition.Count}個あります");
+            lastPosition = ChooseBestSafePosition(safePosition, board.getState(), nextPutPeaceId);
         }
         else
         {
             // 安全な手がなければ（= どの手を打っても積み）、諦めてランダムに選ぶ
+            Debug.Log("Taiga: 安全な手がない！ランダムに選択");
             int randomIndex = new System.Random().Next(puttablePosition.Count);
             lastPosition = puttablePosition[randomIndex];
         }
 
-        return new Position(lastPosition % 4, lastPosition / 4);
+        Position finalPosition = new Position(lastPosition % 4, lastPosition / 4);
+        Debug.Log($"Taiga: {Youkan2SelectPieceAlgorithm.QuartoAILib.PieceIdToReadableString(nextPutPeaceId)}を位置({finalPosition.X},{finalPosition.Y})に配置");
+        return finalPosition;
+    }
+
+    /// <summary>
+    /// 安全な配置の中から、次に渡す駒がなくならない位置をランダムに選ぶ
+    /// </summary>
+    private int ChooseBestSafePosition(List<int> safePositions, Piece[] currentState, PieceId pieceToPlace)
+    {
+        List<int> positionsWithPiecesToGive = new List<int>();
+        
+        // 渡す駒がある位置をリストアップ
+        foreach (int position in safePositions)
+        {
+            // この位置に駒を置いた後の盤面を作成
+            Piece[] futureState = PlacePieceOnBoard(currentState, pieceToPlace, position);
+            
+            // 次に渡せる駒があるかチェック（Youkan2Selectのライブラリを使用）
+            if (Youkan2SelectPieceAlgorithm.QuartoAILib.CanGivePieceAfterMove(futureState))
+            {
+                positionsWithPiecesToGive.Add(position);
+            }
+        }
+        
+        // 渡す駒がある位置からランダムに選択
+        if (positionsWithPiecesToGive.Count > 0)
+        {
+            Debug.Log($"Taiga: 渡す駒がある位置が{positionsWithPiecesToGive.Count}個見つかりました");
+            int randomIndex = new System.Random().Next(positionsWithPiecesToGive.Count);
+            return positionsWithPiecesToGive[randomIndex];
+        }
+        
+        // 全ての位置で渡す駒がなくなる場合は安全な位置からランダムに選ぶ
+        Debug.Log("Taiga: 全ての位置で駒がなくなる...安全な位置からランダム選択");
+        int fallbackIndex = new System.Random().Next(safePositions.Count);
+        return safePositions[fallbackIndex];
     }
 
     /// <summary>
