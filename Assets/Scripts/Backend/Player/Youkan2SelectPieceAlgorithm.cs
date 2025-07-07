@@ -143,7 +143,6 @@ public class Youkan2SelectPieceAlgorithm : SelectPieceAlgorithm
                 
                 scores[pieceId] = score;
             }
-            
             return scores.OrderBy(x => x.Value).First().Key;
         }
 
@@ -194,7 +193,7 @@ public class Youkan2SelectPieceAlgorithm : SelectPieceAlgorithm
         /// <param name="pieceToGive">評価する駒</param>
         /// <param name="availablePositions">利用可能な位置</param>
         /// <param name="depth">読みの深さ（8=8手先まで）</param>
-        /// <returns>評価スコア（低いほど相手に不利）</returns>
+        /// <returns>評価スコア（高いほど相手が有利な手）</returns>
         private float EvaluatePieceWithLookahead(PieceId pieceToGive, List<Position> availablePositions, int depth)
         {
             if (depth <= 0 || availablePositions.Count == 0)
@@ -267,6 +266,13 @@ public class Youkan2SelectPieceAlgorithm : SelectPieceAlgorithm
             return bestWorstCaseScore == float.MaxValue ? 0f : bestWorstCaseScore;
         }
 
+
+        /// <summary>
+        /// 指定した駒を配置した際に、相手が安全に配置できる位置の数をカウントする
+        /// </summary>
+        /// <param name="pieceId">配置する駒のID</param>
+        /// <param name="positions">配置可能な位置のリスト</param>
+        /// <returns>相手が安全に配置できる位置の数</returns>
         private int CountOpponentSafePositions(PieceId pieceId, List<Position> positions)
         {
             int safeCount = 0;
@@ -275,7 +281,6 @@ public class Youkan2SelectPieceAlgorithm : SelectPieceAlgorithm
             {
                 Board tempBoard = quartoAILib.getNextBoard(pieceId, pos);
                 
-                // TaigaのIsLosingStateロジックを使って安全性を判定
                 bool isSafe = true;
                 List<PieceId> remainingPieces = quartoAILib.GetSelectablePieces();
                 remainingPieces.Remove(pieceId);
@@ -283,9 +288,8 @@ public class Youkan2SelectPieceAlgorithm : SelectPieceAlgorithm
                 foreach (PieceId nextPiece in remainingPieces)
                 {
                     List<Position> nextPositions = new QuartoAILib(tempBoard).GetPuttablePositions();
-                    var winningMoves = new QuartoAILib(tempBoard).GetImmediateWinPieces(
+                    List<(PieceId pieceId, Position position)> winningMoves = new QuartoAILib(tempBoard).GetImmediateWinPieces(
                         new List<PieceId> { nextPiece }, nextPositions);
-                    
                     if (winningMoves.Count > 0)
                     {
                         isSafe = false;
@@ -299,124 +303,13 @@ public class Youkan2SelectPieceAlgorithm : SelectPieceAlgorithm
             return safeCount;
         }
 
-        private int CountReachBreakingMoves(PieceId pieceId, List<Position> positions)
-        {
-            int breakCount = 0;
-            
-            foreach (Position pos in positions)
-            {
-                if (DoesBreakReach(board.getState(), pos, pieceId))
-                {
-                    breakCount++;
-                }
-            }
-            
-            return breakCount;
-        }
-
         /// <summary>
-        /// リーチを崩すかどうかを判定
+        /// 指定した駒を配置した際に、相手が次のターンで危険になる駒の割合を計算する
         /// </summary>
-        private bool DoesBreakReach(Piece[] state, Position position, PieceId pieceToPlace)
-        {
-            int posIndex = (int)(position.Y * 4 + position.X);
-            int[][] lines = {
-                new int[] {0, 1, 2, 3}, new int[] {4, 5, 6, 7}, new int[] {8, 9, 10, 11}, new int[] {12, 13, 14, 15}, // 横
-                new int[] {0, 4, 8, 12}, new int[] {1, 5, 9, 13}, new int[] {2, 6, 10, 14}, new int[] {3, 7, 11, 15}, // 縦
-                new int[] {0, 5, 10, 15}, new int[] {3, 6, 9, 12} // 斜め
-            };
-            
-            foreach (int[] line in lines)
-            {
-                if (!line.Contains(posIndex)) continue;
-                
-                // このラインの既存の駒を取得
-                List<Piece> linePieces = new List<Piece>();
-                int emptyCount = 0;
-                
-                foreach (int pos in line)
-                {
-                    if (state[pos] != null)
-                    {
-                        linePieces.Add(state[pos]);
-                    }
-                    else if (pos == posIndex)
-                    {
-                        // 置こうとしている場所
-                        linePieces.Add(new Piece(pieceToPlace));
-                    }
-                    else
-                    {
-                        emptyCount++;
-                    }
-                }
-                
-                // 3つ揃っていて、4つ目を置く場合
-                if (linePieces.Count == 4 && emptyCount == 0)
-                {
-                    // 元の3つに共通属性があり、4つ目で崩れるかチェック
-                    List<Piece> originalThree = new List<Piece>();
-                    for (int i = 0; i < line.Length; i++)
-                    {
-                        if (state[line[i]] != null)
-                        {
-                            originalThree.Add(state[line[i]]);
-                        }
-                    }
-                    
-                    if (originalThree.Count == 3 && 
-                        TaigaPutPieceAlgorithm.HasCommonAttribute(
-                            originalThree[0], originalThree[1], originalThree[2], originalThree[2]))
-                    {
-                        // 4つで共通属性がなくなったらリーチが崩れたことになる
-                        if (!TaigaPutPieceAlgorithm.HasCommonAttribute(
-                            linePieces[0], linePieces[1], linePieces[2], linePieces[3]))
-                        {
-                            return true;
-                        }
-                    }
-                }
-            }
-            
-            return false;
-        }
-
-        private float CalculateNextTurnRisk(PieceId pieceId, List<Position> positions)
-        {
-            float totalRisk = 0f;
-            
-            foreach (Position pos in positions)
-            {
-                Board tempBoard = quartoAILib.getNextBoard(pieceId, pos);
-                List<PieceId> remainingPieces = quartoAILib.GetSelectablePieces();
-                remainingPieces.Remove(pieceId);
-                
-                // 相手が次に選べる駒の中で、自分が危険になる駒の割合
-                int dangerousPieces = 0;
-                foreach (PieceId nextPiece in remainingPieces)
-                {
-                    List<Position> myNextPositions = new QuartoAILib(tempBoard).GetPuttablePositions();
-                    bool hasSafeMove = false;
-                    
-                    foreach (Position myPos in myNextPositions)
-                    {
-                        Board futureBoard = new QuartoAILib(tempBoard).getNextBoard(nextPiece, myPos);
-                        if (futureBoard.judge() == PlayerId.None)
-                        {
-                            hasSafeMove = true;
-                            break;
-                        }
-                    }
-                    
-                    if (!hasSafeMove) dangerousPieces++;
-                }
-                
-                totalRisk += (float)dangerousPieces / remainingPieces.Count * 20f;
-            }
-            
-            return totalRisk / positions.Count;
-        }
-
+        /// <param name="pieceId">配置する駒のID</param>
+        /// <param name="positions">配置可能な位置のリスト</param>
+        /// <returns>相手が次のターンで危険になる駒の割合</returns>
+        private float CalculateDangerPercentage(PieceId pieceId, List<Position> positions)
         private PieceId? FindCheckmateMove(List<PieceId> pieces, List<Position> positions)
         {
             foreach (PieceId piece in pieces)
