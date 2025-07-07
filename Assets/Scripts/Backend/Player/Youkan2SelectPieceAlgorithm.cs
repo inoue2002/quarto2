@@ -302,14 +302,14 @@ public class Youkan2SelectPieceAlgorithm : SelectPieceAlgorithm
             
             return safeCount;
         }
-
+        
         /// <summary>
-        /// 指定した駒を配置した際に、相手が次のターンで危険になる駒の割合を計算する
+        /// チェックメイト（必勝手）を見つける
+        /// 相手がどの駒を選んでも、どの位置に置いても必ず自分が勝てるような駒を探す
         /// </summary>
-        /// <param name="pieceId">配置する駒のID</param>
+        /// <param name="pieces">選択可能な駒のリスト</param>
         /// <param name="positions">配置可能な位置のリスト</param>
-        /// <returns>相手が次のターンで危険になる駒の割合</returns>
-        private float CalculateDangerPercentage(PieceId pieceId, List<Position> positions)
+        /// <returns>チェックメイトとなる駒。見つからない場合はnull</returns>
         private PieceId? FindCheckmateMove(List<PieceId> pieces, List<Position> positions)
         {
             foreach (PieceId piece in pieces)
