@@ -19,8 +19,6 @@ public class Youkan2SelectPieceAlgorithm : SelectPieceAlgorithm
 
         PieceId result = new SelectPieceLib(board).getSelectBestPiece();
         Debug.Log("Youkan2:選択完了 " + QuartoAILib.PieceIdToReadableString(result));
-
-        // なぜか渡せない
         return result;
     }
 
@@ -93,24 +91,23 @@ public class Youkan2SelectPieceAlgorithm : SelectPieceAlgorithm
             }
 
             if(safePieces.Count == 0){
-                // 安全な駒がない場合 = 全ての駒で相手が即勝ちできる
-                Debug.Log("Youkan2:安全な駒がない！相手を詰み状態にできるかチェックします");
-                
-                // 相手にとって最も選択肢が少ない（詰みに近い）駒を選ぶ
-                PieceId? checkmateMove = FindCheckmateMove(selectablePieces, puttablePositions);
-                if (checkmateMove.HasValue)
-                {
-                    Debug.Log($"Youkan2:相手を詰みに追い込む駒を選択: {QuartoAILib.PieceIdToReadableString(checkmateMove.Value)}");
-                    return checkmateMove.Value;
-                }
-                
-                // それでも見つからない場合はランダム
+                // 安全な駒がない場合はランダムに諦める
+                Debug.Log("Youkan2:安全な駒がない！ランダムに選択します");
                 return selectablePieces[UnityEngine.Random.Range(0, selectablePieces.Count)];
             }
 
-            // 残りマス数に応じて読みの深さを動的に調整
+            // まず安全な駒の中で詰み手があるかチェック
+            Debug.Log("Youkan2:安全な駒の中で詰み手をチェック");
+            PieceId? checkmateMove = FindCheckmateMove(safePieces, puttablePositions);
+            if (checkmateMove.HasValue)
+            {
+                Debug.Log($"Youkan2:詰み手発見！ {QuartoAILib.PieceIdToReadableString(checkmateMove.Value)}");
+                return checkmateMove.Value;
+            }
+
+            // 詰み手がない場合は探索で最適な手を選ぶ
             int searchDepth = CalculateOptimalSearchDepth(emptySpaces);
-            Debug.Log($"Youkan2: 空きマス{emptySpaces}個 → {searchDepth}手先読みモード");
+            Debug.Log($"Youkan2: 詰み手なし → 空きマス{emptySpaces}個で{searchDepth}手先読み");
             
             if (searchDepth > 2)
             {
@@ -150,35 +147,24 @@ public class Youkan2SelectPieceAlgorithm : SelectPieceAlgorithm
             return scores.OrderBy(x => x.Value).First().Key;
         }
 
-        /// <summary>
-        /// 残りマス数に応じて最適な探索深度を計算する
-        /// </summary>
+        // ゲームの進行に応じて探索範囲を決定する
         private int CalculateOptimalSearchDepth(int emptySpaces)
         {
-            if (emptySpaces <= 4)
+            return emptySpaces switch
             {
-                return 8; // 終盤は8手先まで（ほぼ完全読み）
-            }
-            else if (emptySpaces <= 6)
-            {
-                return 6; // 中終盤は6手先
-            }
-            else if (emptySpaces <= 8)
-            {
-                return 4; // 中盤は4手先
-            }
-            else if (emptySpaces <= 10)
-            {
-                return 3; // 序中盤は3手先
-            }
-            else
-            {
-                return 2; // 序盤は基本戦略（2手先相当）
-            }
+                // 最後
+                <= 4 => 8,
+                // 6以下
+                <= 6 => 6,
+                <= 8 => 4,
+                <= 10 => 3,
+                // 最初
+                _ => 2
+            };
         }
 
         /// <summary>
-        /// 指定した深度で高度な探索を行う（旧DeepAnalysisの拡張版）
+        /// 指定した深度で探索を行う
         /// </summary>
         private PieceId SelectBestPieceWithAdvancedSearch(List<PieceId> safePieces, List<Position> puttablePositions, int searchDepth)
         {
@@ -203,7 +189,7 @@ public class Youkan2SelectPieceAlgorithm : SelectPieceAlgorithm
 
 
         /// <summary>
-        /// 指定した深度まで先読みして駒を評価する（拡張可能な設計）
+        /// 指定した深度まで先読みして駒を評価する
         /// </summary>
         /// <param name="pieceToGive">評価する駒</param>
         /// <param name="availablePositions">利用可能な位置</param>
@@ -246,7 +232,7 @@ public class Youkan2SelectPieceAlgorithm : SelectPieceAlgorithm
         }
 
         /// <summary>
-        /// 自分の駒選択フェーズの評価（再帰的に呼び出し可能）
+        /// 自分の駒選択フェーズの評価
         /// </summary>
         private float EvaluateMyNextPieceSelection(Board currentBoard, int remainingDepth)
         {
@@ -382,7 +368,7 @@ public class Youkan2SelectPieceAlgorithm : SelectPieceAlgorithm
                         TaigaPutPieceAlgorithm.HasCommonAttribute(
                             originalThree[0], originalThree[1], originalThree[2], originalThree[2]))
                     {
-                        // 4つで共通属性がなくなったらリーチを崩す
+                        // 4つで共通属性がなくなったらリーチが崩れたことになる
                         if (!TaigaPutPieceAlgorithm.HasCommonAttribute(
                             linePieces[0], linePieces[1], linePieces[2], linePieces[3]))
                         {
@@ -550,17 +536,10 @@ public class Youkan2SelectPieceAlgorithm : SelectPieceAlgorithm
             return allPieces;
         }
 
-        // 元々の盤面,設置するピース,場所 から新しいボードを作成
+        // 元々の盤面,設置するピース,場所 から新しいボードを作成（高速化版）
         public Board getNextBoard(PieceId pieceId, Position position)
         {
-            Board tempBoard = new Board();
-            for (int i = 0; i < board.getState().Length; i++)
-            {
-                if (board.getState()[i] != null)
-                {
-                    tempBoard.putPiece(board.getState()[i].getPieceId(), new Position(i % 4, i / 4));
-                }
-            }
+            Board tempBoard = new Board(board); // 高速コピーコンストラクタ使用
             tempBoard.putPiece(pieceId, position);
             return tempBoard;
         }
