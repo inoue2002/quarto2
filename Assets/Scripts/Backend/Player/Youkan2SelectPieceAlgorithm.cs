@@ -432,7 +432,14 @@ public class Youkan2SelectPieceAlgorithm : SelectPieceAlgorithm
         // 元々の盤面,設置するピース,場所 から新しいボードを作成（高速化版）
         public Board getNextBoard(PieceId pieceId, Position position)
         {
-            Board tempBoard = new Board(board); // 高速コピーコンストラクタ使用
+            Board tempBoard = new Board();
+            for (int i = 0; i < board.getState().Length; i++)
+            {
+                if (board.getState()[i] != null)
+                {
+                    tempBoard.putPiece(board.getState()[i].getPieceId(), new Position(i % 4, i / 4));
+                }
+            }
             tempBoard.putPiece(pieceId, position);
             return tempBoard;
         }
